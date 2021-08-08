@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 -- Banco de dados: `metas_sta`
 --
 
-CREATE DATABASE mydatabase CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE db_metas_sta CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
