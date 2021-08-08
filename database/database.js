@@ -4,7 +4,7 @@ const localhost = {
   host     : 'localhost',
   user     : 'root',
   password : '',
-  database : "metas_sta",
+  database : "db_metas_sta",
   multipleStatements: true
 };
 

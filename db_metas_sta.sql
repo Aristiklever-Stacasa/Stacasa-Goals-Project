@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 08, 2021 at 03:26 PM
+-- Generation Time: Aug 08, 2021 at 11:48 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -20,6 +20,10 @@ SET time_zone = "+00:00";
 --
 -- Database: `metas_sta`
 --
+
+CREATE DATABASE db_metas_sta CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE db_metas_sta;
 
 -- --------------------------------------------------------
 
@@ -105,7 +109,7 @@ CREATE TABLE `metas_fisicas` (
   `CD_PROCESSO` int(11) NOT NULL,
   `CD_USUARIO` int(11) NOT NULL,
   `NR_META` int(11) NOT NULL,
-  `NR_CONSTATACOES` float(4,2) DEFAULT NULL,
+  `NR_CONSTATACOES` float(11,2) DEFAULT 0.00,
   `NR_EVID_APRESENTA` int(11) DEFAULT NULL,
   `DS_JUSTIFIC` text DEFAULT NULL,
   `DT_CRIACAO` datetime DEFAULT current_timestamp(),
@@ -163,9 +167,9 @@ CREATE TABLE `metas_qualit` (
   `CD_SETOR` int(11) NOT NULL,
   `CD_USUARIO` int(11) NOT NULL,
   `DS_NOME` text NOT NULL,
-  `NR_CONSTATACOES` float(4,2) NOT NULL,
-  `NR_EVID_APRESENTA` int(11) NOT NULL,
-  `DS_JUSTIFIC` text NOT NULL,
+  `NR_CONSTATACOES` float(11,2) DEFAULT 0.00,
+  `NR_EVID_APRESENTA` float(11,2) DEFAULT 0.00,
+  `DS_JUSTIFIC` text DEFAULT NULL,
   `DT_CRIACAO` datetime DEFAULT current_timestamp(),
   `DT_ATUALIZACAO` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -188,11 +192,11 @@ CREATE TABLE `processos` (
 --
 
 INSERT INTO `processos` (`CD_PROCESSO`, `DS_NOME`, `DT_CRIACAO`, `DT_ATUALIZACAO`) VALUES
-(1, 'E1- INTERNAÇÕES - 100 pontos', '2021-08-06 08:50:42', '2021-08-06 08:50:42'),
-(2, 'E2  -- CIRURGIAS ELETIVAS E CIRURGIAS DE TRAUMATOLOGIA /ORTOPEDIA (FECHADAS) - 200 pontos\n', '2021-08-06 08:50:43', '2021-08-06 08:50:43'),
-(3, 'E3 -ATENDIMENTOS AMBULATORIAS- 100 pontos\n', '2021-08-06 08:50:43', '2021-08-06 08:50:43'),
-(4, 'E4 - CONSULTAS AMBULATORIAIS - 100 PONTOS \n', '2021-08-06 08:50:43', '2021-08-06 08:50:43'),
-(5, 'E4 - EXAMES - 100 PONTOS \n', '2021-08-06 08:50:44', '2021-08-06 08:50:44');
+(1, 'E1 - INTERNAÇÕES', '2021-08-06 08:50:42', '2021-08-08 16:50:51'),
+(2, 'E2  - CIRURGIAS ELETIVAS E CIRURGIAS DE TRAUMATOLOGIA /ORTOPEDIA (FECHADAS)\r\n', '2021-08-06 08:50:43', '2021-08-08 16:20:03'),
+(3, 'E3 - ATENDIMENTOS AMBULATORIAS\r\n', '2021-08-06 08:50:43', '2021-08-08 16:20:09'),
+(4, 'E4 - CONSULTAS AMBULATORIAIS\r\n', '2021-08-06 08:50:43', '2021-08-08 16:20:16'),
+(5, 'E5 - EXAMES\r\n\r\n', '2021-08-06 08:50:44', '2021-08-08 16:59:28');
 
 -- --------------------------------------------------------
 
