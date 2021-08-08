@@ -3,7 +3,7 @@ const router = express.Router();
 const IndexController = require('./controllers/IndexController');
 const UserController = require('./controllers/UserController');
 
-router.get('/', IndexController.index);
+router.get('/', IndexController.fisicas);
 router.get('/metas/qualitativas', IndexController.qualitativas);
 
 //Rotas de usuário
