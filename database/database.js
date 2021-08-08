@@ -26,25 +26,3 @@ connection.connect(function(err) {
 });
 
 module.exports = connection;
-
-
-
-
-
-/*
-const mysql      = require('mysql');
-var con = mysql.createConnection({
-  host     : '10.10.10.5',
-  user     : 'root',
-  password : 'controle',
-  database: "metas_sta"
-});
-
-con.connect(function(err) {
-  if (err) throw err;
-  con.query("SELECT * FROM setores", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-  });
-});
-*/
