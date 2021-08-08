@@ -6,7 +6,7 @@ const login = (req, res) => {
 };
 
 const logout = (req, res) => {
-  //
+  res.render('users/login');
 };
 
 module.exports = {
