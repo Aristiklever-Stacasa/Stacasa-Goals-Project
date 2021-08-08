@@ -1,10 +1,20 @@
 const mysql      = require('mysql');
-var connection = mysql.createConnection({
+
+const localhost = {
   host     : 'localhost',
   user     : 'root',
   password : '',
-  database: 'db_metas_sta'
-});
+  database : "db_metas_sta"
+};
+
+const sta_casa = {
+  host     : '10.10.10.5',
+  user     : 'root',
+  password : 'controle',
+  database : "db_metas_sta"
+};
+
+var connection = mysql.createConnection(localhost);
  
 connection.connect(function(err) {
   if (err) {
