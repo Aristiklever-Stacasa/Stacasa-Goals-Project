@@ -1,9 +1,9 @@
 const mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : '10.10.10.5',
+  host     : 'localhost',
   user     : 'root',
-  password : 'controle',
-  database: "metas_sta"
+  password : '',
+  database: 'db_metas_sta'
 });
  
 connection.connect(function(err) {
