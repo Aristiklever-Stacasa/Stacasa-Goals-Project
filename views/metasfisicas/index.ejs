@@ -2,25 +2,26 @@
 
   <!-- Tab links -->
   <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
+    <% process.forEach( value => { %>
+      <button id="<%= value.CD_PROCESSO %>" class="tablinks" onclick="openCity(event, '<%= value.id %>')" ><%= value.CD_PROCESSO %></button>
+    <% }) %>
+    <!-- <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
     <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
   </div>
 
   <!-- Tab content -->
-  <div id="London" class="tabcontent">
-    <h3>London</h3>
-    <%- include('includes/table'); -%>
-  </div>
 
-  <div id="Paris" class="tabcontent">
-    <h3>Paris</h3>
-    <%- include('includes/table'); -%>
-  </div>
+  <!-- <div id="E1 - INTERNAÇÕES" class="tabcontent">
+    <h3>E1 - INTERNAÇÕES</h3>
+  </div> -->
 
-  <div id="Tokyo" class="tabcontent">
-    <h3>Tokyo</h3>
-    <%- include('includes/table'); -%>
-  </div> 
+  <% process.forEach( valueProc => { %>
+    <div id="<%= valueProc.id %>" class="tabcontent">
+      <h3><%= valueProc.DS_NOME %></h3>
+
+      <%- include('includes/table', {valueProc: valueProc}); -%>
+    </div>
+  <% }) %>
 
 <%- include('../footer'); -%>
