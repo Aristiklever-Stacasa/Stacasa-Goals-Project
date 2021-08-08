@@ -1,0 +1,16 @@
+/*Configuraçõe gerais*/
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+
+/*Login*/
+.image_center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+}
