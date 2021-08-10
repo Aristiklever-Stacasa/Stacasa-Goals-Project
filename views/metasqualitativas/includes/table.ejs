@@ -1,7 +1,7 @@
 <table class="table table-bordered mt-4">
   <thead>
     <tr>
-      <th scope="col" colspan="2" class="text-center">Metas</th>
+      <th scope="col" class="text-center">Metas</th>
       <th scope="col" class="text-center">Constatações</th>
       <th scope="col" class="text-center">Evidências Apresentadas</th>
       <th scope="col" class="text-center">Fontes de Evidências</th>
@@ -10,29 +10,28 @@
     </tr>
   </thead>
   <tbody>
+    <% qualitative_goals.forEach( value => {
+        if( setor.CD_SETOR == value.CD_SETOR ) {
+    %>
     <tr>
-      <th scope="row" class="text-center">Metas</th>
-      <td class="text-center">230</td>
-      <td class="text-center">
-        <div class="mb-3">
-          <input type="email" class="form-control" placeholder="valor">
-        </div>
-      </td>
-      <td class="text-center">@mdo</td>
+      <th scope="row" class="text-center"> <%= value.DS_NOME %> </th>
+      <td class="text-center"> <%= value.NR_CONSTATACOES %> </td>
+      <td class="text-center"> <%= value.NR_EVID_APRESENTA %> </td>
       <td class="text-center">
         <div class="mb-3">
           <input class="form-control" type="file" id="formFileMultiple" multiple>
         </div>
       </td>
       <td>
-        <div class="mb-3">
+        <%= value.DS_JUSTIFIC %>
+        <!-- <div class="mb-3">
           <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
+        </div> -->
       </td>
       <td>
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Launch demo modal
+          Editar
         </button>
 
         <!-- Modal -->
@@ -56,5 +55,6 @@
 
       </td>
     </tr>
+    <% }}) %>
   </tbody>
 </table>

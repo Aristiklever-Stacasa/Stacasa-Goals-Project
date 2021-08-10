@@ -2,25 +2,35 @@
 
   <!-- Tab links -->
   <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
+    <% setors.forEach( value => { %>
+      <button id="<%= value.CD_SETOR %>" class="tablinks" onclick="openCity(event, '<%= value.id %>')"><%= value.id %></button>
+    <% }) %>
+    <!-- <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
     <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
   </div>
 
   <!-- Tab content -->
-  <div id="London" class="tabcontent">
+  <% setors.forEach( value => { %>
+    <div id="<%= value.id %>" class="tabcontent">
+      <h3><%= value.SETOR %></h3>
+      <%- include('includes/table', { setor: value }); -%>
+    </div>
+  <% }) %>
+  <!-- <div id="London" class="tabcontent">
     <h3>London</h3>
-    <%- include('includes/table'); -%>
+    
   </div>
 
   <div id="Paris" class="tabcontent">
     <h3>Paris</h3>
-    <%- include('includes/table'); -%>
+   
   </div>
 
   <div id="Tokyo" class="tabcontent">
     <h3>Tokyo</h3>
-    <%- include('includes/table'); -%>
-  </div> 
+    
+  </div>  -->
 
 <%- include('../footer'); -%>
+
