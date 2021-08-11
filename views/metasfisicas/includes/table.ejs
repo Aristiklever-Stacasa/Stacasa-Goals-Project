@@ -51,7 +51,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="/fileupload" method="POST">
+        <form action="/fileupload" method="POST" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="">Arquivo</label>
             <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
@@ -61,7 +61,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

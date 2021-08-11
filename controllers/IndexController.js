@@ -13,13 +13,13 @@ const qualitativas = (req, res) => {
   res.render('metasqualitativas/index');
 };
 
-/*const file = (req, res) => {
-  res.send("Here");
-};*/
+const file = (req, res) => {
+  res.redirect('back');
+};
 
 module.exports = {
   index,
-  qualitativas
-  //file
+  qualitativas,
+  file
 };
 
