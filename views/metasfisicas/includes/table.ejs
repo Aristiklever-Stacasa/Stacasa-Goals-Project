@@ -34,7 +34,11 @@
             </td>
             <td>
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="Insert()">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="Insert(
+                '<%= valuePhys.NR_META %>'
+                ,'<%= valuePhys.NR_CONSTATACOES %>'
+                ,'<%= valuePhys.NR_EVID_APRESENTA %>'
+                ,'<%= valuePhys.DS_JUSTIFIC %>')">
                 Editar
               </button>
 
@@ -56,8 +60,16 @@
       <div class="modal-body">
         <form action="/fileupload" method="POST" enctype="multipart/form-data">
           <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Evidências Apresentadas</label>
+            <input type="number" name="evidpres" class="form-control" id="evidpres">
+          </div>
+          <div class="mb-3">
             <label for="">Arquivo</label>
             <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Justificativas</label>
+            <textarea class="form-control" name="justifications" id="exampleFormControlTextarea1" rows="3"></textarea>
           </div>
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">Upload</button>
@@ -69,7 +81,8 @@
 </div>
 
 <script>
-  function Insert() {
-    //alert("Hello");
+  function Insert(par01, par02, par03, par04) {
+    //alert(par01);
+    document.getElementById('evidpres').value = par01;
   }
 </script>
