@@ -57,10 +57,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="/fileupload" method="POST">
+        <form action="/fileupload" method="POST" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="">Arquivo</label>
-            <input class="form-control" type="file" name="qualitfile" id="formFileMultiple" multiple>
+            <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
           </div>
           <button type="submit" class="btn btn-primary">Upload</button>
         </form>
