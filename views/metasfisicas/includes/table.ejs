@@ -25,9 +25,6 @@
             </td>
             <td class="text-center"> <%= valuePhys.NR_EVID_APRESENTA %> </td>
             <td class="text-center">
-              <div class="mb-3">
-                <input class="form-control" type="file" id="formFileMultiple" multiple>
-              </div>
             </td>
             <td>
               <%= valuePhys.DS_JUSTIFIC %>
@@ -37,7 +34,7 @@
             </td>
             <td>
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="Insert()">
                 Editar
               </button>
 
@@ -53,7 +50,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title text-center" id="exampleModalLabel">Modal title</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -62,12 +59,17 @@
             <label for="">Arquivo</label>
             <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
           </div>
-          <button type="submit" class="btn btn-primary">Upload</button>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  function Insert() {
+    //alert("Hello");
+  }
+</script>
