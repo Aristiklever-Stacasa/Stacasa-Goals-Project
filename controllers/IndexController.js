@@ -43,8 +43,13 @@ const qualitativas = (req, res) => {
   });
 };
 
+const file = (req, res) => {
+  res.redirect('back');
+};
+
 module.exports = {
   fisicas,
-  qualitativas
+  qualitativas,
+  file
 };
 
