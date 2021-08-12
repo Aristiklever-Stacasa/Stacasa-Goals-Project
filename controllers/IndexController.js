@@ -25,7 +25,7 @@ const fisicas = (req, res) => {
 const qualitativas = (req, res) => {
   database.connect(function (err) {
 
-    database.query("SELECT s.CD_SETOR, s.DS_NOME SETOR FROM metas_qualit mq INNER JOIN setores s ON mq.CD_SETOR = s.CD_SETOR GROUP BY mq.CD_SETOR; SELECT s.CD_SETOR, s.DS_NOME, mq.DS_NOME, mq.NR_CONSTATACOES, mq.NR_EVID_APRESENTA, mq.DS_JUSTIFIC FROM metas_qualit mq INNER JOIN setores s ON mq.CD_SETOR = s.CD_SETOR",
+    database.query("SELECT DISTINCT s.CD_SETOR, s.DS_NOME SETOR FROM metas_qualit mq INNER JOIN setores s ON mq.CD_SETOR = s.CD_SETOR; SELECT s.CD_SETOR, s.DS_NOME, mq.DS_NOME, mq.NR_CONSTATACOES, mq.NR_EVID_APRESENTA, mq.DS_JUSTIFIC FROM metas_qualit mq INNER JOIN setores s ON mq.CD_SETOR = s.CD_SETOR",
       (err, result, fields) => {
 
         result[0].forEach(value => {
