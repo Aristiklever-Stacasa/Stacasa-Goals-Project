@@ -3,11 +3,11 @@
   <!-- Tab links -->
   <div class="tab">
     <% process.forEach( value => { %>
-      <button id="<%= value.CD_PROCESSO %>" class="tablinks" onclick="openCity(event, '<%= value.id %>')" ><%= value.id %></button>
+      <button id="<%= value.CD_PROCESSO %>" class="tablinks" onclick="openCity(event, '<%= value.id %>')" >
+        <%= value.id %>
+      </button>
     <% }) %>
-    <!-- <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
-    <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
+    <!-- <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button> -->
   </div>
 
   <!-- Tab content -->
