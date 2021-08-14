@@ -4,7 +4,7 @@ const database = require('../database/database');
 const fisicas = (req, res) => {
   database.connect(function (err) {
 
-    database.query("SELECT CD_PROCESSO, DS_NOME FROM processos; SELECT mf.CD_METAS_FISICAS, p.CD_PROCESSO, s.DS_NOME, mf.NR_META, mf.NR_CONSTATACOES, mf.NR_EVID_APRESENTA, mf.DS_JUSTIFIC FROM metas_fisicas mf INNER JOIN setores s ON s.CD_SETOR = mf.CD_SETOR INNER JOIN processos p ON p.CD_PROCESSO = mf.CD_PROCESSO",
+    database.query("SELECT CD_PROCESSO, DS_NOME FROM processos; SELECT mf.CD_METAS_FISICAS, p.CD_PROCESSO, s.DS_NOME, mf.NR_META, mf.NR_CONSTATACOES, lmf.NR_EVID_APRESENTA,  lmf.DS_JUSTIFIC, lmf.NR_JULG_COMISSAO FROM metas_fisicas mf LEFT JOIN log_metas_fisicas lmf ON lmf.CD_METAS_FISICAS = mf.CD_METAS_FISICAS INNER JOIN setores s ON s.CD_SETOR = mf.CD_SETOR INNER JOIN processos p ON p.CD_PROCESSO = mf.CD_PROCESSO",
       (err, result, fields) => {
 
         result[0].forEach(value => {
