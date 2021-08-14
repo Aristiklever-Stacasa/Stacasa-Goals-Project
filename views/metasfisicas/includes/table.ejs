@@ -51,6 +51,7 @@
                 ,'<%= valuePhys.NR_EVID_APRESENTA %>'
                 ,'<%= valuePhys.DS_JUSTIFIC %>')"
               >
+
                 Editar
               </button>
             </td>
@@ -58,3 +59,41 @@
     <% }}) %>
   </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/fileupload" method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Evidências Apresentadas</label>
+            <input type="number" name="evidpres" class="form-control" id="evidpres">
+          </div>
+          <div class="mb-3">
+            <label for="">Arquivo</label>
+            <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Justificativas</label>
+            <textarea class="form-control" name="justifications" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function Insert(par01, par02, par03, par04) {
+    //alert(par01);
+    document.getElementById('evidpres').value = par01;
+  }
+</script>
