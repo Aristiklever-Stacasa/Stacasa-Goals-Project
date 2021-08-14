@@ -29,48 +29,11 @@ USE db_metas_sta;
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `fontes_evidencias_qualit`
+-- Estrutura para tabela `fontes_evidencias_fisica`
 --
 
-CREATE TABLE `fontes_evidencias_qualit` (
+CREATE TABLE `fontes_evidencias_fisica` (
   `CD_DOC` int(11) NOT NULL,
-  `CD_METAS_QUALIT` int(11) DEFAULT NULL,
-  -- `CD_SETOR` int(11) NOT NULL,
-  `DS_NOME` text NOT NULL,
-  `DS_DIRETORIO` varchar(128) NOT NULL,
-  `DT_CRIACAO` datetime DEFAULT CURRENT_TIMESTAMP,
-  `DT_ATUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Gatilhos `fontes_evidencias_qualit`
---
-/*
-DELIMITER $$
-CREATE TRIGGER `CK_fontes_qualit_relations` BEFORE INSERT ON `fontes_evidencias_qualit` FOR EACH ROW BEGIN
-	    	IF NEW.CD_METAS_QUALIT IS NULL AND NEW.CD_SETOR IS NULL THEN
-    	CALL wsp.error( 'É necessário informar um dos dois (setor, setor_proesso)!' );
-    END IF;
-    
-        IF NEW.CD_METAS_QUALIT IS NOT NULL AND NEW.CD_SETOR IS NOT NULL THEN
-    	CALL wsp.error( 'É necessário informar apenas um código.' );
-	END IF;
-
-END
-$$
-DELIMITER ;
-*/
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `fontes_evidencia_fisicas`
---
-
-CREATE TABLE `fontes_evidencia_fisicas` (
-  `CD_DOC` int(11) NOT NULL,
-  `CD_METAS_FISICAS` int(11) NOT NULL,
-  -- `CD_PROCESSO` int(11) NOT NULL,
   `DS_NOME` text NOT NULL,
   `DS_DIRETORIO` text NOT NULL,
   `DT_CRIACAO` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -78,23 +41,27 @@ CREATE TABLE `fontes_evidencia_fisicas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Gatilhos `fontes_evidencia_fisicas`
+-- Fazendo dump de dados para tabela `fontes_evidencias_fisica`
 --
-/*
-DELIMITER $$
-CREATE TRIGGER `CK_fontes_fisicas_relations` BEFORE INSERT ON `fontes_evidencia_fisicas` FOR EACH ROW BEGIN
-	    	IF NEW.CD_METAS_FISICAS IS NULL AND NEW.CD_PROCESSO IS NULL THEN
-    	CALL wsp.error( 'É necessário informar um dos dois (setor, setor_proesso)!' );
-    END IF;
-    
-        IF NEW.CD_METAS_FISICAS IS NOT NULL AND NEW.CD_PROCESSO IS NOT NULL THEN
-    	CALL wsp.error( 'É necessário informar apenas um código.' );
-	END IF;
 
-END
-$$
-DELIMITER ;
-*/
+INSERT INTO `fontes_evidencias_fisica` (`CD_DOC`, `DS_NOME`, `DS_DIRETORIO`, `DT_CRIACAO`, `DT_ATUALIZACAO`) VALUES
+(1, 'mpdf.pdf', 'uploads/mpdf.pdf', '2021-08-13 17:18:31', '2021-08-13 17:18:31'),
+(2, 'Proposta_Comercial_de_Servicos Negociação Final.pdf', 'uploads/Proposta_Comercial_de_Servicos Negociação Final.pdf', '2021-08-13 17:18:32', '2021-08-13 17:18:32'),
+(3, 'FICHA DE EVOLUÇÃO FONOAUDIOLÓGICA.pdf', 'uploads/FICHA DE EVOLUÇÃO FONOAUDIOLÓGICA.pdf', '2021-08-13 17:18:32', '2021-08-13 17:18:32');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `fontes_evidencias_qualit`
+--
+
+CREATE TABLE `fontes_evidencias_qualit` (
+  `CD_DOC` int(11) NOT NULL,
+  `DS_NOME` text NOT NULL,
+  `DS_DIRETORIO` varchar(128) NOT NULL,
+  `DT_CRIACAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DT_ATUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -112,61 +79,96 @@ CREATE TABLE `metas_fisicas` (
   `NR_EVID_APRESENTA` int(11) DEFAULT NULL,
   `DS_JUSTIFIC` text,
   `DT_CRIACAO` datetime DEFAULT CURRENT_TIMESTAMP,
-  `DT_ATUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `DT_ATUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `NR_JULG_COMISSAO` float(11,2) DEFAULT '0.00',
+  `NR_SALDO` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Fazendo dump de dados para tabela `metas_fisicas`
 --
 
-INSERT INTO `metas_fisicas` (`CD_METAS_FISICAS`, `CD_SETOR`, `CD_PROCESSO`, `CD_USUARIO`, `NR_META`, `NR_CONSTATACOES`, `NR_EVID_APRESENTA`, `DS_JUSTIFIC`, `DT_CRIACAO`, `DT_ATUALIZACAO`) VALUES
-(1, 1, 1, 1, 230, 12.50, NULL, NULL, '2021-08-06 09:48:53', '2021-08-06 09:48:53'),
-(2, 2, 1, 1, 160, 12.50, NULL, NULL, '2021-08-06 09:51:39', '2021-08-06 09:51:39'),
-(3, 3, 1, 1, 30, 12.50, NULL, NULL, '2021-08-06 10:02:32', '2021-08-06 10:04:11'),
-(4, 4, 1, 1, 187, 12.50, NULL, NULL, '2021-08-06 10:03:14', '2021-08-06 10:04:17'),
-(5, 5, 1, 1, 192, 12.50, NULL, NULL, '2021-08-06 10:05:55', '2021-08-06 10:06:30'),
-(6, 6, 1, 1, 20, 12.50, NULL, NULL, '2021-08-06 10:06:52', '2021-08-06 10:08:30'),
-(7, 7, 1, 1, 90, 12.50, NULL, NULL, '2021-08-06 10:07:26', '2021-08-06 10:08:35'),
-(8, 8, 1, 1, 471, 12.50, NULL, NULL, '2021-08-06 10:09:14', '2021-08-06 10:09:40'),
-(9, 1, 2, 1, 60, 28.60, NULL, NULL, '2021-08-06 10:11:36', '2021-08-06 10:11:59'),
-(10, 2, 2, 1, 3, 28.60, NULL, NULL, '2021-08-06 10:14:30', '2021-08-06 10:17:56'),
-(11, 6, 2, 1, 70, 28.60, NULL, NULL, '2021-08-06 10:15:57', '2021-08-06 10:17:59'),
-(12, 10, 2, 1, 25, 28.60, NULL, NULL, '2021-08-06 10:17:11', '2021-08-06 10:18:06'),
-(13, 11, 2, 1, 20, 28.60, NULL, NULL, '2021-08-06 10:20:37', '2021-08-06 10:22:07'),
-(14, 12, 2, 1, 100, 28.60, NULL, NULL, '2021-08-06 10:21:47', '2021-08-06 10:22:11'),
-(15, 13, 3, 1, 2155, 25.00, NULL, NULL, '2021-08-06 10:24:52', '2021-08-06 10:28:28'),
-(16, 14, 3, 1, 350, 25.00, NULL, NULL, '2021-08-06 10:25:49', '2021-08-06 10:28:32'),
-(17, 15, 3, 1, 300, 25.00, NULL, NULL, '2021-08-06 10:26:49', '2021-08-06 10:28:36'),
-(18, 16, 3, 1, 30, 25.00, NULL, NULL, '2021-08-06 10:27:50', '2021-08-06 10:28:40'),
-(19, 17, 4, 1, 250, 8.30, NULL, NULL, '2021-08-06 10:38:58', '2021-08-10 08:09:21'),
-(20, 6, 4, 1, 125, 8.30, NULL, NULL, '2021-08-06 10:41:03', '2021-08-10 08:09:28'),
-(21, 3, 4, 1, 750, 8.30, NULL, NULL, '2021-08-06 10:43:56', '2021-08-10 08:09:31'),
-(22, 9, 4, 1, 50, 8.30, NULL, NULL, '2021-08-06 10:52:47', '2021-08-10 08:09:34'),
-(23, 18, 4, 1, 60, 8.30, NULL, NULL, '2021-08-06 10:55:07', '2021-08-10 08:09:37'),
-(24, 19, 4, 1, 20, 8.30, NULL, NULL, '2021-08-06 10:55:54', '2021-08-10 08:09:43'),
-(25, 20, 4, 1, 30, 8.30, NULL, NULL, '2021-08-06 10:56:34', '2021-08-10 08:09:47'),
-(26, 21, 4, 1, 110, 8.30, NULL, NULL, '2021-08-06 10:57:15', '2021-08-10 08:11:00'),
-(27, 22, 4, 1, 20, 8.30, NULL, NULL, '2021-08-06 10:57:43', '2021-08-10 08:11:05'),
-(28, 1, 4, 1, 550, 8.30, NULL, NULL, '2021-08-06 10:58:25', '2021-08-10 08:11:17'),
-(29, 11, 4, 1, 20, 8.30, NULL, NULL, '2021-08-06 10:59:11', '2021-08-10 08:11:28'),
-(39, 23, 4, 1, 200, 8.30, NULL, NULL, '2021-08-09 10:28:45', '2021-08-10 08:12:14'),
-(40, 24, 5, 1, 13033, 6.25, NULL, NULL, '2021-08-09 10:29:44', '2021-08-10 08:12:18'),
-(41, 25, 5, 1, 100, 6.25, NULL, NULL, '2021-08-09 10:33:11', '2021-08-10 08:12:25'),
-(42, 27, 5, 1, 40, 6.25, NULL, NULL, '2021-08-09 10:37:45', '2021-08-10 08:12:28'),
-(43, 28, 5, 1, 20, 6.25, NULL, NULL, '2021-08-09 10:38:25', '2021-08-10 08:12:31'),
-(44, 29, 5, 1, 750, 6.25, NULL, NULL, '2021-08-09 10:48:14', '2021-08-10 08:12:34'),
-(45, 30, 5, 1, 30, 6.25, NULL, NULL, '2021-08-09 10:49:46', '2021-08-10 08:12:40'),
-(46, 31, 5, 1, 10, 6.25, NULL, NULL, '2021-08-09 10:50:50', '2021-08-10 08:12:43'),
-(47, 32, 5, 1, 10, 6.25, NULL, NULL, '2021-08-09 10:51:58', '2021-08-10 08:12:47'),
-(48, 33, 5, 1, 185, 6.25, NULL, NULL, '2021-08-09 10:52:50', '2021-08-10 08:12:52'),
-(49, 34, 5, 1, 150, 6.25, NULL, NULL, '2021-08-09 10:53:28', '2021-08-10 08:12:56'),
-(50, 35, 5, 1, 2500, 6.25, NULL, NULL, '2021-08-09 10:55:04', '2021-08-10 08:13:01'),
-(51, 36, 5, 1, 208, 6.25, NULL, NULL, '2021-08-09 10:55:45', '2021-08-10 08:13:03'),
-(52, 37, 5, 1, 100, 6.25, NULL, NULL, '2021-08-09 10:56:27', '2021-08-10 08:13:07'),
-(53, 38, 5, 1, 550, 6.25, NULL, NULL, '2021-08-09 10:57:06', '2021-08-10 08:13:10'),
-(54, 39, 5, 1, 204, 6.25, NULL, NULL, '2021-08-09 10:58:22', '2021-08-10 08:13:14'),
-(55, 9, 2, 1, 70, 28.60, NULL, NULL, '2021-08-11 16:02:08', '2021-08-11 16:02:08'),
-(56, 26, 5, 1, 30, 6.25, NULL, NULL, '2021-08-11 16:21:45', '2021-08-11 16:21:45');
+INSERT INTO `metas_fisicas` (`CD_METAS_FISICAS`, `CD_SETOR`, `CD_PROCESSO`, `CD_USUARIO`, `NR_META`, `NR_CONSTATACOES`, `NR_EVID_APRESENTA`, `DS_JUSTIFIC`, `DT_CRIACAO`, `DT_ATUALIZACAO`, `NR_JULG_COMISSAO`, `NR_SALDO`) VALUES
+(1, 1, 1, 1, 230, 12.50, 220, 'wqdwqdwqd qwwq', '2021-08-06 09:48:53', '2021-08-13 17:18:31', 12.00, 0),
+(2, 2, 1, 1, 160, 12.50, 150, 'vAMOS LA', '2021-08-06 09:51:39', '2021-08-13 16:20:18', 17.20, 0),
+(3, 3, 1, 1, 30, 12.50, NULL, NULL, '2021-08-06 10:02:32', '2021-08-06 10:04:11', 0.00, 0),
+(4, 4, 1, 1, 187, 12.50, NULL, NULL, '2021-08-06 10:03:14', '2021-08-06 10:04:17', 0.00, 0),
+(5, 5, 1, 1, 192, 12.50, NULL, NULL, '2021-08-06 10:05:55', '2021-08-06 10:06:30', 0.00, 0),
+(6, 6, 1, 1, 20, 12.50, NULL, NULL, '2021-08-06 10:06:52', '2021-08-06 10:08:30', 0.00, 0),
+(7, 7, 1, 1, 90, 12.50, NULL, NULL, '2021-08-06 10:07:26', '2021-08-06 10:08:35', 0.00, 0),
+(8, 8, 1, 1, 471, 12.50, NULL, NULL, '2021-08-06 10:09:14', '2021-08-06 10:09:40', 0.00, 0),
+(9, 1, 2, 1, 60, 28.60, NULL, NULL, '2021-08-06 10:11:36', '2021-08-06 10:11:59', 0.00, 0),
+(10, 2, 2, 1, 3, 28.60, NULL, NULL, '2021-08-06 10:14:30', '2021-08-06 10:17:56', 0.00, 0),
+(11, 6, 2, 1, 70, 28.60, NULL, NULL, '2021-08-06 10:15:57', '2021-08-06 10:17:59', 0.00, 0),
+(12, 10, 2, 1, 25, 28.60, NULL, NULL, '2021-08-06 10:17:11', '2021-08-06 10:18:06', 0.00, 0),
+(13, 11, 2, 1, 20, 28.60, NULL, NULL, '2021-08-06 10:20:37', '2021-08-06 10:22:07', 0.00, 0),
+(14, 12, 2, 1, 100, 28.60, NULL, NULL, '2021-08-06 10:21:47', '2021-08-06 10:22:11', 0.00, 0),
+(15, 13, 3, 1, 2155, 25.00, NULL, NULL, '2021-08-06 10:24:52', '2021-08-06 10:28:28', 0.00, 0),
+(16, 14, 3, 1, 350, 25.00, NULL, NULL, '2021-08-06 10:25:49', '2021-08-06 10:28:32', 0.00, 0),
+(17, 15, 3, 1, 300, 25.00, NULL, NULL, '2021-08-06 10:26:49', '2021-08-06 10:28:36', 0.00, 0),
+(18, 16, 3, 1, 30, 25.00, NULL, NULL, '2021-08-06 10:27:50', '2021-08-06 10:28:40', 0.00, 0),
+(19, 17, 4, 1, 250, 8.30, NULL, NULL, '2021-08-06 10:38:58', '2021-08-10 08:09:21', 0.00, 0),
+(20, 6, 4, 1, 125, 8.30, NULL, NULL, '2021-08-06 10:41:03', '2021-08-10 08:09:28', 0.00, 0),
+(21, 3, 4, 1, 750, 8.30, NULL, NULL, '2021-08-06 10:43:56', '2021-08-10 08:09:31', 0.00, 0),
+(22, 9, 4, 1, 50, 8.30, NULL, NULL, '2021-08-06 10:52:47', '2021-08-10 08:09:34', 0.00, 0),
+(23, 18, 4, 1, 60, 8.30, NULL, NULL, '2021-08-06 10:55:07', '2021-08-10 08:09:37', 0.00, 0),
+(24, 19, 4, 1, 20, 8.30, NULL, NULL, '2021-08-06 10:55:54', '2021-08-10 08:09:43', 0.00, 0),
+(25, 20, 4, 1, 30, 8.30, NULL, NULL, '2021-08-06 10:56:34', '2021-08-10 08:09:47', 0.00, 0),
+(26, 21, 4, 1, 110, 8.30, NULL, NULL, '2021-08-06 10:57:15', '2021-08-10 08:11:00', 0.00, 0),
+(27, 22, 4, 1, 20, 8.30, NULL, NULL, '2021-08-06 10:57:43', '2021-08-10 08:11:05', 0.00, 0),
+(28, 1, 4, 1, 550, 8.30, NULL, NULL, '2021-08-06 10:58:25', '2021-08-10 08:11:17', 0.00, 0),
+(29, 11, 4, 1, 20, 8.30, NULL, NULL, '2021-08-06 10:59:11', '2021-08-10 08:11:28', 0.00, 0),
+(39, 23, 4, 1, 200, 8.30, NULL, NULL, '2021-08-09 10:28:45', '2021-08-10 08:12:14', 0.00, 0),
+(40, 24, 5, 1, 13033, 6.25, NULL, NULL, '2021-08-09 10:29:44', '2021-08-10 08:12:18', 0.00, 0),
+(41, 25, 5, 1, 100, 6.25, NULL, NULL, '2021-08-09 10:33:11', '2021-08-10 08:12:25', 0.00, 0),
+(42, 27, 5, 1, 40, 6.25, NULL, NULL, '2021-08-09 10:37:45', '2021-08-10 08:12:28', 0.00, 0),
+(43, 28, 5, 1, 20, 6.25, NULL, NULL, '2021-08-09 10:38:25', '2021-08-10 08:12:31', 0.00, 0),
+(44, 29, 5, 1, 750, 6.25, NULL, NULL, '2021-08-09 10:48:14', '2021-08-10 08:12:34', 0.00, 0),
+(45, 30, 5, 1, 30, 6.25, NULL, NULL, '2021-08-09 10:49:46', '2021-08-10 08:12:40', 0.00, 0),
+(46, 31, 5, 1, 10, 6.25, NULL, NULL, '2021-08-09 10:50:50', '2021-08-10 08:12:43', 0.00, 0),
+(47, 32, 5, 1, 10, 6.25, NULL, NULL, '2021-08-09 10:51:58', '2021-08-10 08:12:47', 0.00, 0),
+(48, 33, 5, 1, 185, 6.25, NULL, NULL, '2021-08-09 10:52:50', '2021-08-10 08:12:52', 0.00, 0),
+(49, 34, 5, 1, 150, 6.25, NULL, NULL, '2021-08-09 10:53:28', '2021-08-10 08:12:56', 0.00, 0),
+(50, 35, 5, 1, 2500, 6.25, NULL, NULL, '2021-08-09 10:55:04', '2021-08-10 08:13:01', 0.00, 0),
+(51, 36, 5, 1, 208, 6.25, NULL, NULL, '2021-08-09 10:55:45', '2021-08-10 08:13:03', 0.00, 0),
+(52, 37, 5, 1, 100, 6.25, NULL, NULL, '2021-08-09 10:56:27', '2021-08-10 08:13:07', 0.00, 0),
+(53, 38, 5, 1, 550, 6.25, NULL, NULL, '2021-08-09 10:57:06', '2021-08-10 08:13:10', 0.00, 0),
+(54, 39, 5, 1, 204, 6.25, NULL, NULL, '2021-08-09 10:58:22', '2021-08-10 08:13:14', 0.00, 0),
+(55, 9, 2, 1, 70, 28.60, NULL, NULL, '2021-08-11 16:02:08', '2021-08-11 16:02:08', 0.00, 0),
+(56, 26, 5, 1, 30, 6.25, NULL, NULL, '2021-08-11 16:21:45', '2021-08-11 16:21:45', 0.00, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `metas_fontes_fisicas`
+--
+
+CREATE TABLE `metas_fontes_fisicas` (
+  `CD_METAS_FONTES_FISICAS` int(11) NOT NULL,
+  `CD_METAS_FISICAS` int(11) NOT NULL,
+  `CD_FONTES_EVIDENCIAS_FISICAS` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Fazendo dump de dados para tabela `metas_fontes_fisicas`
+--
+
+INSERT INTO `metas_fontes_fisicas` (`CD_METAS_FONTES_FISICAS`, `CD_METAS_FISICAS`, `CD_FONTES_EVIDENCIAS_FISICAS`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `metas_fontes_qualit`
+--
+
+CREATE TABLE `metas_fontes_qualit` (
+  `CD_METAS_FONTES_QUALIT` int(11) NOT NULL,
+  `CD_METAS_QUALIT` int(11) NOT NULL,
+  `CD_FONTES_EVIDENCIAS_QUALIT` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -363,20 +365,16 @@ INSERT INTO `usuarios` (`CD_USUARIO`, `DS_LOGIN`, `DS_SENHA`, `DT_CRIACAO`, `DT_
 --
 
 --
+-- Índices de tabela `fontes_evidencias_fisica`
+--
+ALTER TABLE `fontes_evidencias_fisica`
+  ADD PRIMARY KEY (`CD_DOC`);
+
+--
 -- Índices de tabela `fontes_evidencias_qualit`
 --
 ALTER TABLE `fontes_evidencias_qualit`
-  ADD PRIMARY KEY (`CD_DOC`),
-  -- ADD KEY `FK_fontes_setor` (`CD_SETOR`),
-  ADD KEY `FK_fontes_metas_qualit` (`CD_METAS_QUALIT`) USING BTREE;
-
---
--- Índices de tabela `fontes_evidencia_fisicas`
---
-ALTER TABLE `fontes_evidencia_fisicas`
-  ADD PRIMARY KEY (`CD_DOC`),
-  ADD KEY `FK_fontes_metas_fisicas` (`CD_METAS_FISICAS`);
-  -- ADD KEY `FK_fontes_processo` (`CD_PROCESSO`);
+  ADD PRIMARY KEY (`CD_DOC`);
 
 --
 -- Índices de tabela `metas_fisicas`
@@ -386,6 +384,22 @@ ALTER TABLE `metas_fisicas`
   ADD KEY `FK_metas_fisicas_setor` (`CD_SETOR`),
   ADD KEY `FK_metas_fisicas_processo` (`CD_PROCESSO`),
   ADD KEY `FK_metas_fisicas_usuario` (`CD_USUARIO`);
+
+--
+-- Índices de tabela `metas_fontes_fisicas`
+--
+ALTER TABLE `metas_fontes_fisicas`
+  ADD PRIMARY KEY (`CD_METAS_FONTES_FISICAS`),
+  ADD KEY `FK_metas_fisicas` (`CD_METAS_FISICAS`),
+  ADD KEY `FK_fontes_evidencias_fisicas` (`CD_FONTES_EVIDENCIAS_FISICAS`);
+
+--
+-- Índices de tabela `metas_fontes_qualit`
+--
+ALTER TABLE `metas_fontes_qualit`
+  ADD PRIMARY KEY (`CD_METAS_FONTES_QUALIT`),
+  ADD KEY `FK_metas_qualit` (`CD_METAS_QUALIT`),
+  ADD KEY `FK_fontes_evidencias_qualit` (`CD_FONTES_EVIDENCIAS_QUALIT`);
 
 --
 -- Índices de tabela `metas_qualit`
@@ -420,20 +434,30 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de tabela `fontes_evidencias_fisica`
+--
+ALTER TABLE `fontes_evidencias_fisica`
+  MODIFY `CD_DOC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT de tabela `fontes_evidencias_qualit`
 --
 ALTER TABLE `fontes_evidencias_qualit`
-  MODIFY `CD_DOC` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de tabela `fontes_evidencia_fisicas`
---
-ALTER TABLE `fontes_evidencia_fisicas`
   MODIFY `CD_DOC` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `metas_fisicas`
 --
 ALTER TABLE `metas_fisicas`
   MODIFY `CD_METAS_FISICAS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+--
+-- AUTO_INCREMENT de tabela `metas_fontes_fisicas`
+--
+ALTER TABLE `metas_fontes_fisicas`
+  MODIFY `CD_METAS_FONTES_FISICAS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de tabela `metas_fontes_qualit`
+--
+ALTER TABLE `metas_fontes_qualit`
+  MODIFY `CD_METAS_FONTES_QUALIT` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `metas_qualit`
 --
@@ -459,26 +483,26 @@ ALTER TABLE `usuarios`
 --
 
 --
--- Restrições para tabelas `fontes_evidencias_qualit`
---
-ALTER TABLE `fontes_evidencias_qualit`
-  ADD CONSTRAINT `FK_fontes_metas_qualit` FOREIGN KEY (`CD_METAS_QUALIT`) REFERENCES `metas_qualit` (`CD_METAS_QUALIT`);
-  -- ADD CONSTRAINT `FK_fontes_setor` FOREIGN KEY (`CD_SETOR`) REFERENCES `setores` (`CD_SETOR`);
-
---
--- Restrições para tabelas `fontes_evidencia_fisicas`
---
-ALTER TABLE `fontes_evidencia_fisicas`
-  ADD CONSTRAINT `FK_fontes_metas_fisicas` FOREIGN KEY (`CD_METAS_FISICAS`) REFERENCES `metas_fisicas` (`CD_METAS_FISICAS`);
-  -- ADD CONSTRAINT `FK_fontes_processo` FOREIGN KEY (`CD_PROCESSO`) REFERENCES `processos` (`CD_PROCESSO`);
-
---
 -- Restrições para tabelas `metas_fisicas`
 --
 ALTER TABLE `metas_fisicas`
   ADD CONSTRAINT `FK_metas_fisicas_processo` FOREIGN KEY (`CD_PROCESSO`) REFERENCES `processos` (`CD_PROCESSO`),
   ADD CONSTRAINT `FK_metas_fisicas_setor` FOREIGN KEY (`CD_SETOR`) REFERENCES `setores` (`CD_SETOR`),
   ADD CONSTRAINT `FK_metas_fisicas_usuario` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuarios` (`CD_USUARIO`);
+
+--
+-- Restrições para tabelas `metas_fontes_fisicas`
+--
+ALTER TABLE `metas_fontes_fisicas`
+  ADD CONSTRAINT `FK_fontes_evidencias_fisicas` FOREIGN KEY (`CD_FONTES_EVIDENCIAS_FISICAS`) REFERENCES `fontes_evidencias_fisica` (`CD_DOC`),
+  ADD CONSTRAINT `FK_metas_fisicas` FOREIGN KEY (`CD_METAS_FISICAS`) REFERENCES `metas_fisicas` (`CD_METAS_FISICAS`);
+
+--
+-- Restrições para tabelas `metas_fontes_qualit`
+--
+ALTER TABLE `metas_fontes_qualit`
+  ADD CONSTRAINT `FK_fontes_evidencias_qualit` FOREIGN KEY (`CD_FONTES_EVIDENCIAS_QUALIT`) REFERENCES `fontes_evidencias_qualit` (`CD_DOC`),
+  ADD CONSTRAINT `FK_metas_qualit` FOREIGN KEY (`CD_METAS_QUALIT`) REFERENCES `metas_qualit` (`CD_METAS_QUALIT`);
 
 --
 -- Restrições para tabelas `metas_qualit`

@@ -2,20 +2,14 @@
 
   <!-- Tab links -->
   <div class="tab">
-    <% process.forEach( value => { %>
-      <button id="<%= value.CD_PROCESSO %>" class="tablinks" onclick="openCity(event, '<%= value.id %>')" >
-        <%= value.id %>
+    <% process.forEach( valueProc => { %>
+      <button id="<%= valueProc.CD_PROCESSO %>" class="tablinks" onclick="openProc(event, '<%= valueProc.id %>')" >
+        <%= valueProc.id %>
       </button>
     <% }) %>
-    <!-- <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button> -->
   </div>
 
   <!-- Tab content -->
-
-  <!-- <div id="E1 - INTERNAÇÕES" class="tabcontent">
-    <h3>E1 - INTERNAÇÕES</h3>
-  </div> -->
-
   <% process.forEach( valueProc => { %>
     <div id="<%= valueProc.id %>" class="tabcontent">
       <h3><%= valueProc.DS_NOME %></h3>
@@ -23,5 +17,94 @@
       <%- include('includes/table', {valueProc: valueProc}); -%>
     </div>
   <% }) %>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-name"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <!--Formulário de inserção-->
+        <form action="/fileupload" method="POST" enctype="multipart/form-data">
+          <input type="hidden" id="cd_metas_fisicas" name="CD_METAS_FISICAS" value="">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Meta</label>
+                  <div id="meta"></div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Constatações</label>
+                  <div id="constatacoes"></div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Evidências Apresentadas</label>
+                  <input type="number" name="evidpres" class="form-control" id="evidpres" onchange="calcJulg(this)">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="mb-3">
+                <label for="">Fontes de Evidências</label>
+                <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                <label for="">Julg. da comissão</label>
+                <input type="number" name="julgcomis" id="julgcomis" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Justificativas</label>
+            <textarea class="form-control" name="justifications" id="justific" rows="3" style="resize: none;"></textarea>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-danger">Registrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    function Insert(CD_METAS_FISICAS, DS_NOME, NR_META, NR_CONSTATACOES, NR_EVID_APRESENTA, DS_JUSTIFIC) { 
+      document.getElementById('cd_metas_fisicas').value = CD_METAS_FISICAS;
+      document.getElementById('modal-name').innerHTML = DS_NOME;
+      document.getElementById('meta').innerHTML = NR_META;
+      document.getElementById('constatacoes').innerHTML = NR_CONSTATACOES;
+      document.getElementById('evidpres').value = NR_EVID_APRESENTA;
+      document.getElementById('justific').value = DS_JUSTIFIC;
+      document.getElementById('julgcomis').value = (NR_CONSTATACOES * (((NR_EVID_APRESENTA * 100) / NR_META) / 100)).toFixed(1);
+    }
+
+    const calcJulg = ( input ) => {
+      let evid_apresenta = input.value;
+
+      let nr_meta = document.getElementById('meta').innerHTML;
+      let nr_constatacoes = document.getElementById('constatacoes').innerHTML;
+
+      document.getElementById('julgcomis').value = (nr_constatacoes * (((evid_apresenta * 100) / nr_meta) / 100)).toFixed(1);
+    }
+  </script>
+
+  <div class="card mt-4">
+    Here
+  </div>
 
 <%- include('../footer'); -%>

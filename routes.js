@@ -10,9 +10,8 @@ const storage = multer.diskStorage({
       cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
-      console.log(file);
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-      cb(null, file.fieldname + '-' + uniqueSuffix)
+      cb(null, file.originalname)
     }
   })
 
@@ -21,7 +20,7 @@ const upload = multer({ storage });
 router.get('/', IndexController.fisicas);
 router.get('/metas/qualitativas', IndexController.qualitativas);
 
-router.post('/fileupload', upload.single('physycfile'), IndexController.file);
+router.post('/fileupload', upload.array('physycfile'), IndexController.file);
 
 //Rotas de usuário
 router.get('/login', UserController.login);

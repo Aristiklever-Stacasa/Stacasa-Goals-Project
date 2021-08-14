@@ -2,12 +2,11 @@
 
   <!-- Tab links -->
   <div class="tab">
-    <% setors.forEach( value => { %>
-      <button id="<%= value.CD_SETOR %>" class="tablinks" onclick="openCity(event, '<%= value.id %>')">
-        <%= value.id %>
+    <% setors.forEach( setor => { %>
+      <button id="<%= setor.CD_SETOR %>" class="tablinks" onclick="openProc(event, '<%= setor.id %>')">
+        <%= setor.id %>
       </button>
     <% }) %>
-    <!-- <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button> -->
   </div>
 
   <!-- Tab content -->
@@ -17,20 +16,78 @@
       <%- include('includes/table', { setor: value }); -%>
     </div>
   <% }) %>
-  <!-- <div id="London" class="tabcontent">
-    <h3>London</h3>
-    
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-name"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/fileupload" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="cd_metas_qualit" name="CD_METAS_FISICAS" value="">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="" class="form-label">Constatações</label>
+                    <div id="constatacoes"></div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Evidências Apresentadas</label>
+                    <input type="number" name="evidpres" class="form-control" id="evidpres">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="mb-3">
+                  <label for="">Fontes de Evidências</label>
+                  <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <label for="">Julg. da comissão</label>
+                  <input type="number" name="julgcomis" class="form-control" id="julgcomis">
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Justificativas</label>
+              <textarea class="form-control" name="justifications" id="justific" rows="3" style="resize: none;"></textarea>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-danger">Registrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="Paris" class="tabcontent">
-    <h3>Paris</h3>
-   
+  <script>
+    function insertQuali(CD_METAS_QUALIT, DS_NOME, NR_CONSTATACOES, NR_EVID_APRESENTA, DS_JUSTIFIC) {
+      document.getElementById('cd_metas_qualit').value = CD_METAS_QUALIT;
+      // document.getElementById('modal-name').innerHTML = DS_NOME;
+      document.getElementById('constatacoes').innerHTML = NR_CONSTATACOES;
+      document.getElementById('evidpres').value = NR_EVID_APRESENTA;
+      document.getElementById('justific').value = DS_JUSTIFIC;
+      // document.getElementById('julgcomis').value = (NR_CONSTATACOES * (((220 * 100) / NR_META) / 100)).toFixed(1);
+    }
+  </script>
+
+  <div class="card mt-4">
+    Here
   </div>
 
-  <div id="Tokyo" class="tabcontent">
-    <h3>Tokyo</h3>
-    
-  </div>  -->
 
 <%- include('../footer'); -%>
 

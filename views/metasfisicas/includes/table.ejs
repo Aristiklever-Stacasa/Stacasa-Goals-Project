@@ -6,7 +6,8 @@
       <th scope="col" class="text-center">Evidências Apresentadas</th>
       <th scope="col" class="text-center">Fontes de Evidências</th>
       <th scope="col" class="text-center">Justificativas</th>
-      <th scope="col" class="text-center">Ações</th>
+      <th scope="col" class="text-center">Julgamento da comissão</th>
+      <th scope="col" class="text-center"></th>
     </tr>
   </thead>
   <tbody>
@@ -19,54 +20,30 @@
             <td class="text-center"><%= valuePhys.NR_META %></td>
             <td class="text-center">
               <%= valuePhys.NR_CONSTATACOES %>
-              <!-- <div class="mb-3">
-                <input value="" type="text" class="form-control" placeholder="12.4">
-              </div> -->
             </td>
             <td class="text-center"> <%= valuePhys.NR_EVID_APRESENTA %> </td>
+            <td class="text-center">POPUP || DROPDOWN com os links</td>
             <td class="text-center">
-              <div class="mb-3">
-                <input class="form-control" type="file" id="formFileMultiple" multiple>
-              </div>
+              <%= valuePhys.DS_JUSTIFIC %>
             </td>
             <td>
-              <%= valuePhys.DS_JUSTIFIC %>
-              <!-- <div class="mb-3">
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-              </div> -->
+              <!--Julgamento da comissão-->
+              <%= (valuePhys.NR_CONSTATACOES * (((valuePhys.NR_EVID_APRESENTA * 100) / valuePhys.NR_META) / 100)).toFixed(1) %>
             </td>
             <td>
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="Insert(
+                '<%= valuePhys.CD_METAS_FISICAS %>'
+                ,'<%= valuePhys.DS_NOME %>'
+                ,'<%= valuePhys.NR_META %>'
+                ,'<%= valuePhys.NR_CONSTATACOES %>'
+                ,'<%= valuePhys.NR_EVID_APRESENTA %>'
+                ,'<%= valuePhys.DS_JUSTIFIC %>')"
+              >
                 Editar
               </button>
-              
             </td>
           </tr>
     <% }}) %>
   </tbody>
 </table>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="/fileupload" method="POST">
-          <div class="mb-3">
-            <label for="">Arquivo</label>
-            <input class="form-control" type="file" name="qualitfile" id="formFileMultiple" multiple>
-          </div>
-          <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
