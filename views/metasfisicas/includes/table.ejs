@@ -22,7 +22,18 @@
               <%= valuePhys.NR_CONSTATACOES %>
             </td>
             <td class="text-center"> <%= valuePhys.NR_EVID_APRESENTA %> </td>
-            <td class="text-center">POPUP || DROPDOWN com os links</td>
+            <td class="text-center">
+              <div class="dropdown">
+                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Listar arquivos
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+            </td>
             <td class="text-center">
               <%= valuePhys.DS_JUSTIFIC %>
             </td>
