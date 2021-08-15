@@ -21,7 +21,13 @@
             <td class="text-center">
               <%= valuePhys.NR_CONSTATACOES %>
             </td>
-            <td class="text-center"> <%= valuePhys.NR_EVID_APRESENTA %> </td>
+            <td class="text-center">
+              <% if(valuePhys.NR_EVID_APRESENTA == null) { %>
+                Nenhuma evidência apresentada até o mommento.
+              <% } else { %>
+                <%= valuePhys.NR_EVID_APRESENTA %>
+              <% } %>
+            </td>
             <td class="text-center">
               <div class="dropdown">
                 <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,11 +41,19 @@
               </div>
             </td>
             <td class="text-center">
-              <%= valuePhys.DS_JUSTIFIC %>
+              <% if(valuePhys.NR_EVID_APRESENTA == null) { %>
+                Nenhuma Justificativa apresentada até o mommento.
+              <% } else { %>
+                <%= valuePhys.DS_JUSTIFIC %>
+              <% } %>
             </td>
             <td>
               <!--Julgamento da comissão-->
-              <%= (valuePhys.NR_CONSTATACOES * (((valuePhys.NR_EVID_APRESENTA * 100) / valuePhys.NR_META) / 100)).toFixed(1) %>
+              <% if(valuePhys.NR_EVID_APRESENTA == null) { %>
+                Apresente a evidência para que seja possível fazer o cálculo.
+              <% } else { %>
+                <%= (valuePhys.NR_CONSTATACOES * (((valuePhys.NR_EVID_APRESENTA * 100) / valuePhys.NR_META) / 100)).toFixed(1) %>
+              <% } %>
             </td>
             <td>
               <!-- Button trigger modal -->
