@@ -26,8 +26,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="/fileupload" method="POST" enctype="multipart/form-data">
-            <input type="hidden" id="cd_metas_qualit" name="CD_METAS_FISICAS" value="">
+          <form action="/insertQualit" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="cd_metas_qualit" name="cd_metas_qualit" value="">
             <div class="container">
               <div class="row">
                 <div class="col">
@@ -55,7 +55,7 @@
               <div class="col">
                 <div class="mb-3">
                   <label for="">Julg. da comissão</label>
-                  <input type="number" name="julgcomis" class="form-control" id="julgcomis">
+                  <input type="number" name="julgcomis" id="julgcomis" value="" readonly>
                 </div>
               </div>
             </div>
@@ -72,15 +72,30 @@
       </div>
     </div>
   </div>
-
+  
   <script>
-    function insertQuali(CD_METAS_QUALIT, DS_NOME, NR_CONSTATACOES, NR_EVID_APRESENTA, DS_JUSTIFIC) {
+    function insertQuali(CD_METAS_QUALIT, DS_NOME, NR_CONSTATACOES, NR_EVID_APRESENTA, DOCS, DS_JUSTIFIC) {
+      console.log({
+        CD_METAS_QUALIT,
+        DS_NOME,
+        NR_CONSTATACOES,
+        NR_EVID_APRESENTA,
+        DS_JUSTIFIC,
+        docs: DOCS.length,
+        cd_metas_qualit: document.getElementById('cd_metas_qualit').value,
+        const: document.getElementById('constatacoes').innerHTML
+      });
+      
       document.getElementById('cd_metas_qualit').value = CD_METAS_QUALIT;
       // document.getElementById('modal-name').innerHTML = DS_NOME;
       document.getElementById('constatacoes').innerHTML = NR_CONSTATACOES;
       document.getElementById('evidpres').value = NR_EVID_APRESENTA;
       document.getElementById('justific').value = DS_JUSTIFIC;
-      // document.getElementById('julgcomis').value = (NR_CONSTATACOES * (((220 * 100) / NR_META) / 100)).toFixed(1);
+      document.getElementById('julgcomis').value = 0;
+      if(DOCS.length && DS_JUSTIFIC !== "")
+        document.getElementById('julgcomis').value = NR_CONSTATACOES;
+
+      
     }
   </script>
 

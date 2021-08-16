@@ -19,7 +19,7 @@
             if(valueDoc.CD_METAS_FISICAS == valuePhys.CD_METAS_FISICAS) {
               thereIsDoc = 1;
             }
-          })    
+          })
     %>
           <tr>
             <th scope="row" class="text-center"><%= valuePhys.DS_NOME %></th>
@@ -51,7 +51,7 @@
                       documents.forEach(valueDoc => {
                         if(valueDoc.CD_METAS_FISICAS == valuePhys.CD_METAS_FISICAS) {
                     %>
-                      <li><a class="dropdown-item" href="#"><%= valueDoc.DS_NOME %></a></li>
+                      <li><a class="dropdown-item" target="_blank" href="/<%= valueDoc.DS_DIRETORIO %>"><%= valueDoc.DS_NOME %></a></li>
                     <%
                       }})
                     %>
