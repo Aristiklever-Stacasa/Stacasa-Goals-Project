@@ -14,6 +14,12 @@
     <%
       physics_goals.forEach(valuePhys => {
         if(valuePhys.CD_PROCESSO == valueProc.CD_PROCESSO) {
+          let thereIsDoc = 0;
+          documents.forEach(valueDoc => {
+            if(valueDoc.CD_METAS_FISICAS == valuePhys.CD_METAS_FISICAS) {
+              thereIsDoc = 1;
+            }
+          })    
     %>
           <tr>
             <th scope="row" class="text-center"><%= valuePhys.DS_NOME %></th>
@@ -23,26 +29,41 @@
             </td>
             <td class="text-center">
               <% if(valuePhys.NR_EVID_APRESENTA == null) { %>
-                Nenhuma evidência apresentada até o mommento.
+                -
               <% } else { %>
                 <%= valuePhys.NR_EVID_APRESENTA %>
               <% } %>
             </td>
             <td class="text-center">
-              <div class="dropdown">
-                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  Listar arquivos
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </div>
+              <%
+                if(thereIsDoc == 0) {
+              %>
+                  -
+              <%
+                } else {
+              %>
+                <div class="dropdown">
+                  <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Listar arquivos
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <%
+                      documents.forEach(valueDoc => {
+                        if(valueDoc.CD_METAS_FISICAS == valuePhys.CD_METAS_FISICAS) {
+                    %>
+                      <li><a class="dropdown-item" href="#"><%= valueDoc.DS_NOME %></a></li>
+                    <%
+                      }})
+                    %>
+                  </ul>
+                </div>
+              <%
+                }
+              %>
             </td>
             <td class="text-center">
-              <% if(valuePhys.NR_EVID_APRESENTA == null) { %>
-                Nenhuma Justificativa apresentada até o mommento.
+              <% if(valuePhys.DS_JUSTIFIC == null) { %>
+                -
               <% } else { %>
                 <%= valuePhys.DS_JUSTIFIC %>
               <% } %>
@@ -50,7 +71,7 @@
             <td>
               <!--Julgamento da comissão-->
               <% if(valuePhys.NR_EVID_APRESENTA == null) { %>
-                Apresente a evidência para que seja possível fazer o cálculo.
+                -
               <% } else { %>
                 <%= (valuePhys.NR_CONSTATACOES * (((valuePhys.NR_EVID_APRESENTA * 100) / valuePhys.NR_META) / 100)).toFixed(1) %>
               <% } %>
@@ -73,37 +94,6 @@
     <% }}) %>
   </tbody>
 </table>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-center" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="/fileupload" method="POST" enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Evidências Apresentadas</label>
-            <input type="number" name="evidpres" class="form-control" id="evidpres">
-          </div>
-          <div class="mb-3">
-            <label for="">Arquivo</label>
-            <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
-          </div>
-          <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Justificativas</label>
-            <textarea class="form-control" name="justifications" id="exampleFormControlTextarea1" rows="3"></textarea>
-          </div>
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Upload</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
   function Insert(par01, par02, par03, par04) {

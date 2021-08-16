@@ -20,7 +20,8 @@ const upload = multer({ storage });
 router.get('/', IndexController.fisicas);
 router.get('/metas/qualitativas', IndexController.qualitativas);
 
-router.post('/fileupload', upload.array('physycfile'), IndexController.file);
+router.post('/insertFisicas', upload.array('physycfile'), IndexController.fisicDataInsert);
+router.post('/insertQualit', upload.array('physycfile'), IndexController.qualitDataInsert);
 
 //Rotas de usuário
 router.get('/login', UserController.login);

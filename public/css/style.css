@@ -17,7 +17,7 @@ body {
 
 /*Configurações do tab*/
  /* Style the tab */
- .tab {
+.tab {
   overflow: hidden;
   border: 1px solid #ccc;
   background-color: #f1f1f1;

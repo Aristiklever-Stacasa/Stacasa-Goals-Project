@@ -17,7 +17,13 @@
     <tr>
       <th scope="row" class="text-center"> <%= value.DS_NOME %> </th>
       <td class="text-center"> <%= value.NR_CONSTATACOES %> </td>
-      <td class="text-center"> <%= value.NR_EVID_APRESENTA %> </td>
+      <td class="text-center">
+        <% if(value.NR_EVID_APRESENTA == null) { %>
+          -
+        <% } else { %>
+          <%= value.NR_EVID_APRESENTA %>
+        <% } %>
+        <%= value.NR_EVID_APRESENTA %> </td>
       <td class="text-center">
         <div class="dropdown">
           <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,10 +36,20 @@
           </ul>
         </div>
       </td>
-      <td>
-        <%= value.DS_JUSTIFIC %>
+      <td class="text-center">
+        <% if(value.DS_JUSTIFIC == null) { %>
+          -
+        <% } else { %>
+          <%= value.DS_JUSTIFIC %>
+        <% } %>
       </td>
-      <td class="text-center"></td>
+      <td class="text-center">
+        <% if(value.NR_JULG_COMISSAO == null) { %>
+          -
+        <% } else { %>
+          <%= value.NR_JULG_COMISSAO %>
+        <% } %>
+      </td>
       <td>
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-danger"
