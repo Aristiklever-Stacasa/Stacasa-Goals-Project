@@ -4,7 +4,7 @@ const port = 3000;
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const path = require('path');
-var routes = require('./routes');
+const routes = require('./routes');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

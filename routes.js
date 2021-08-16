@@ -25,6 +25,7 @@ router.post('/fileupload', upload.array('physycfile'), IndexController.file);
 //Rotas de usuário
 router.get('/login', UserController.login);
 router.get('/logout', UserController.logout);
+router.post('/tologin', UserController.tologin);
 
 module.exports = router;
 

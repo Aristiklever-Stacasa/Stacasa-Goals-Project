@@ -1,7 +1,7 @@
 <%- include('../headmetasfisicas'); -%>
 
   <!-- Tab links -->
-  <div class="tab">
+  <div class="tab nav nav-pills flex-column flex-sm-row">
     <% process.forEach( valueProc => { %>
       <button id="<%= valueProc.CD_PROCESSO %>" class="tablinks" onclick="openProc(event, '<%= valueProc.id %>')" >
         <%= valueProc.id %>
