@@ -1,30 +1,25 @@
 const express = require('express');
 const database = require('../database/database');
 
-const dateForQuery = (date = undefined) => {
-  if(date == undefined) {
-    const currentMonth = new Date().getMonth() + 1;
-    
-    if(currentMonth > 9)
-      return (new Date().getFullYear() + "-" + currentMonth);
-    
-    return (new Date().getFullYear() + "-0" + currentMonth);
-  } else {
-    console.log(date);
-    return date;
-  }
+const dateForQuery = () => {
+  const currentMonth = new Date().getMonth() + 1;  
   
+  if(currentMonth > 9)
+    return (new Date().getFullYear() + "-" + currentMonth);
+    
+  return (new Date().getFullYear() + "-0" + currentMonth);
+
 };
 
 const fisicas = (req, res) => {
   var date = "";
   database.connect(function (err) {
     if(req.params.date) {
-      //console.log(req.params);
-      date = dateForQuery(req.params.date);
-    } else {
-      date = dateForQuery();
+      // console.log(req.params);
+      date = req.params.date;
     }
+    else
+      date = dateForQuery();
 
     const queryProcess = "SELECT CD_PROCESSO, DS_NOME FROM processos";
     const queryMetasFisicasCurrentDate = "SELECT mf.CD_METAS_FISICAS, p.CD_PROCESSO, s.DS_NOME, mf.NR_META, mf.NR_CONSTATACOES, lmf.NR_EVID_APRESENTA, lmf.DS_JUSTIFIC, lmf.NR_JULG_COMISSAO FROM metas_fisicas mf LEFT JOIN (SELECT CD_METAS_FISICAS, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO, NR_SALDO FROM log_metas_fisicas lmf WHERE lmf.DT_CRIACAO LIKE '" + date + "%') lmf ON lmf.CD_METAS_FISICAS = mf.CD_METAS_FISICAS INNER JOIN setores s ON s.CD_SETOR = mf.CD_SETOR INNER JOIN processos p ON p.CD_PROCESSO = mf.CD_PROCESSO";
@@ -54,7 +49,7 @@ const qualitativas = (req, res) => {
   database.connect(function (err) {
     if(req.params.date) {
       //console.log(req.params);
-      date = dateForQuery(req.params.date);
+      date = req.params.date;
     } else {
       date = dateForQuery();
     }
@@ -102,30 +97,7 @@ const fisicDataInsert = (req, res) => {
       }
 
     });
-    /*
-    const insertLogMetasFisicas = "INSERT INTO log_metas_fisicas(CD_METAS_FISICAS, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO) VALUES (" + body.cd_metas_fisicas + ", " + body.evidpres + ", '" + body.justifications + "', " + body.julgcomis + ")";
-    // const updateLast = "UPDATE metas_fisicas SET NR_EVID_APRESENTA = " + body.evidpres + ", DS_JUSTIFIC = '"  + body.justifications + "', NR_JULG_COMISSAO = " + body.julgcomis + " WHERE CD_METAS_FISICAS = " + body.CD_METAS_FISICAS;
 
-    // Inserção de Meta
-    database.query(insertLogMetasFisicas, (err, result, fields) => {
-      // res.json(result);
-    });
-
-    //Inserção de arquivos
-    files.forEach(file => {
-      database.query("INSERT INTO fontes_evidencias_fisica (DS_NOME, DS_DIRETORIO) VALUES ('" + file.filename + "', '" + file.destination + file.filename + "')",
-        (err, insert_file, fields) => {
-          // res.json({ files, body, err, insertedId: insert_file.insertId });
-
-          let cd_doc = insert_file.insertId;
-
-          database.query("INSERT INTO metas_fontes_fisicas (CD_METAS_FISICAS, CD_FONTES_EVIDENCIAS_FISICAS) VALUES (" + body.cd_metas_fisicas + ", " + cd_doc + ")",
-            (err, resultBind, fields) => {
-              // console.log({ body, insertedId: cd_doc, resultBind });
-            });
-
-        });
-    });*/
   });
 
   res.redirect('back');
@@ -149,30 +121,7 @@ const qualitDataInsert = (req, res) => {
       }
 
     });
-    /*
-    const insertLogMetasQualit = "INSERT INTO log_metas_qualit(CD_METAS_QUALIT, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO) VALUES (" + body.cd_metas_qualit + ", " + body.evidpres + ", '" + body.justifications + "', " + body.julgcomis + ")";
-    
 
-    // Inserção de Meta
-    database.query(insertLogMetasQualit, (err, result, fields) => {
-      // res.json({ err, result });
-    });
-
-    // Inserção de arquivos
-    files.forEach(file => {
-      database.query("INSERT INTO fontes_evidencias_qualit (DS_NOME, DS_DIRETORIO) VALUES ('" + file.filename + "', '" + file.destination + file.filename + "')",
-        (err, insert_file, fields) => {
-          // res.json({ files, body, err, insertedId: insert_file.insertId });
-
-          let cd_doc = insert_file.insertId;
-
-          database.query("INSERT INTO metas_fontes_qualit (CD_METAS_QUALIT, CD_FONTES_EVIDENCIAS_QUALIT) VALUES (" + body.cd_metas_qualit + ", " + cd_doc + ")",
-            (err, resultBind, fields) => {
-              // console.log({ body, insertedId: cd_doc, resultBind });
-            });
-
-        });
-    });*/
   });
 
   res.redirect('/metas/qualitativas');
