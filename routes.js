@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const IndexController = require('./controllers/IndexController');
 const UserController = require('./controllers/UserController');
+const auth = require('./middlewares/auth');
 
 const multer = require('multer');
 
