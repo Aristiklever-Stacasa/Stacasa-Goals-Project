@@ -34,12 +34,10 @@ const fisicas = (req, res) => {
 
 const qualitativas = (req, res) => {
   database.connect(function (err) {
-    const currentMonth = new Date().getMonth() + 1;
-    const currentDate = new Date().getFullYear() + "-0" + currentMonth;
 
     const setors = "SELECT DISTINCT s.CD_SETOR, s.DS_NOME SETOR FROM metas_qualit mq INNER JOIN setores s ON mq.CD_SETOR = s.CD_SETOR";
-    const queryMetasQualitCurrentDate = "SELECT mq.CD_METAS_QUALIT, s.CD_SETOR, s.DS_NOME, mq.DS_NOME, mq.NR_CONSTATACOES, lmq.NR_EVID_APRESENTA, lmq.DS_JUSTIFIC, lmq.NR_JULG_COMISSAO FROM metas_qualit mq LEFT JOIN (SELECT CD_METAS_QUALIT, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO FROM log_metas_qualit lmq WHERE lmq.DT_CRIACAO LIKE '" + currentDate + "%') lmq ON lmq.CD_METAS_QUALIT = mq.CD_METAS_QUALIT INNER JOIN setores s ON s.CD_SETOR = mq.CD_SETOR";
-    const queryDocuments = "SELECT mfq.CD_METAS_FONTES_QUALIT, mfq.CD_METAS_QUALIT, mfq.CD_FONTES_EVIDENCIAS_QUALIT, feq.CD_DOC, feq.DS_NOME, feq.DS_DIRETORIO FROM metas_fontes_qualit mfq INNER JOIN fontes_evidencias_qualit feq ON mfq.CD_FONTES_EVIDENCIAS_QUALIT = feq.CD_DOC WHERE mfq.DT_VINCULACAO LIKE '" + currentDate + "%'";
+    const queryMetasQualitCurrentDate = "SELECT mq.CD_METAS_QUALIT, s.CD_SETOR, s.DS_NOME, mq.DS_NOME, mq.NR_CONSTATACOES, lmq.NR_EVID_APRESENTA, lmq.DS_JUSTIFIC, lmq.NR_JULG_COMISSAO FROM metas_qualit mq LEFT JOIN (SELECT CD_METAS_QUALIT, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO FROM log_metas_qualit lmq WHERE lmq.DT_CRIACAO LIKE '" + dateForQuery() + "%') lmq ON lmq.CD_METAS_QUALIT = mq.CD_METAS_QUALIT INNER JOIN setores s ON s.CD_SETOR = mq.CD_SETOR";
+    const queryDocuments = "SELECT mfq.CD_METAS_FONTES_QUALIT, mfq.CD_METAS_QUALIT, mfq.CD_FONTES_EVIDENCIAS_QUALIT, feq.CD_DOC, feq.DS_NOME, feq.DS_DIRETORIO FROM metas_fontes_qualit mfq INNER JOIN fontes_evidencias_qualit feq ON mfq.CD_FONTES_EVIDENCIAS_QUALIT = feq.CD_DOC WHERE mfq.DT_VINCULACAO LIKE '" + dateForQuery() + "%'";
 
     database.query(setors + "; " + queryMetasQualitCurrentDate + "; " + queryDocuments,
       (err, result, fields) => {
@@ -62,12 +60,79 @@ const qualitativas = (req, res) => {
   });
 };
 
+const insertMetas = (meta, data) => {
+
+  let queryInsertLogMeta;
+
+  database.connect((err) => {
+    if(meta === "fisicas")
+    {
+      // Inserção Metas
+      queryInsertLogMeta = "INSERT INTO log_metas_fisicas(CD_METAS_FISICAS, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO) VALUES (" + data.body.cd_metas_fisicas + ", " + data.body.evidpres + ", '" + data.body.justifications + "', " + data.body.julgcomis + ")";
+      database.query(queryInsertLogMeta, () => {});
+      
+      //Inserção de arquivos
+      data.files.forEach(file => {
+        database.query("INSERT INTO fontes_evidencias_fisica (DS_NOME, DS_DIRETORIO) VALUES ('" + file.filename + "', '" + file.destination + file.filename + "')",
+          (err, insert_file, fields) => {
+            // res.json({ files, body, err, insertedId: insert_file.insertId });
+
+            const cd_doc = insert_file.insertId;
+
+            database.query("INSERT INTO metas_fontes_fisicas (CD_METAS_FISICAS, CD_FONTES_EVIDENCIAS_FISICAS) VALUES (" + data.body.cd_metas_fisicas + ", " + cd_doc + ")",
+              (err, resultBind, fields) => {
+                // console.log({ body, insertedId: cd_doc, resultBind });
+              });
+
+          });
+      });
+
+    }
+    else {
+      queryInsertLogMeta = "INSERT INTO log_metas_qualit(CD_METAS_QUALIT, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO) VALUES (" + data.body.cd_metas_qualit + ", " + data.body.evidpres + ", '" + data.body.justifications + "', " + data.body.julgcomis + ")";
+      database.query(queryInsertLogMeta, () => {});
+
+      // Inserção de arquivos
+      files.forEach(file => {
+        database.query("INSERT INTO fontes_evidencias_qualit (DS_NOME, DS_DIRETORIO) VALUES ('" + file.filename + "', '" + file.destination + file.filename + "')",
+          (err, insert_file, fields) => {
+            // res.json({ files, data.body, err, insertedId: insert_file.insertId });
+
+            let cd_doc = insert_file.insertId;
+
+            database.query("INSERT INTO metas_fontes_qualit (CD_METAS_QUALIT, CD_FONTES_EVIDENCIAS_QUALIT) VALUES (" + data.body.cd_metas_qualit + ", " + cd_doc + ")",
+              (err, resultBind, fields) => {
+                // console.log({ body, insertedId: cd_doc, resultBind });
+              });
+
+          });
+      });
+    }
+  
+  });
+
+  return({meta, data});
+};
+
 const fisicDataInsert = (req, res) => {
-  // res.json({ file: req.files, body: req.body });
   let body = req.body;
   let files = req.files;
 
+  // res.json({ files, body });
+
   database.connect(function (err) {
+    database.query("SELECT COUNT(*) length FROM log_metas_fisicas WHERE CD_METAS_FISICAS = "+ body.cd_metas_fisicas +" AND DT_CRIACAO LIKE '" + dateForQuery() + "%'",
+    (err, result, fields) => {
+      if(result[0].length)
+        res.json({ res: 'update' });
+        // update("fisicas", {body, files});
+      else {
+        // res.json(insertMetas("fisicas", { body, files }));
+        insertMetas("fisicas", { body, files });
+      }
+
+    });
+    /*
     const insertLogMetasFisicas = "INSERT INTO log_metas_fisicas(CD_METAS_FISICAS, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO) VALUES (" + body.cd_metas_fisicas + ", " + body.evidpres + ", '" + body.justifications + "', " + body.julgcomis + ")";
     // const updateLast = "UPDATE metas_fisicas SET NR_EVID_APRESENTA = " + body.evidpres + ", DS_JUSTIFIC = '"  + body.justifications + "', NR_JULG_COMISSAO = " + body.julgcomis + " WHERE CD_METAS_FISICAS = " + body.CD_METAS_FISICAS;
 
@@ -90,7 +155,7 @@ const fisicDataInsert = (req, res) => {
             });
 
         });
-    });
+    });*/
   });
 
   res.redirect('back');
