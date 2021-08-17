@@ -17,28 +17,54 @@
     <tr>
       <th scope="row" class="text-center"> <%= value.DS_NOME %> </th>
       <td class="text-center"> <%= value.NR_CONSTATACOES %> </td>
-      <td class="text-center"> <%= value.NR_EVID_APRESENTA %> </td>
+      <td class="text-center">
+        <% if(value.NR_EVID_APRESENTA == null) { %>
+          -
+        <% } else { %>
+          <%= value.NR_EVID_APRESENTA %>
+        <% } %>
       <td class="text-center">
         <div class="dropdown">
-          <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            Listar arquivos
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Listar arquivos
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <%
+              documents.forEach(valueDoc => {
+                if(valueDoc.CD_METAS_QUALIT == value.CD_METAS_QUALIT) {
+            %>
+                  <li><a class="dropdown-item" target="_blank" href="/<%= valueDoc.DS_DIRETORIO %>"><%= valueDoc.DS_NOME %></a></li>
+            <%
+              }})
+            %>
           </ul>
         </div>
       </td>
-      <td>
-        <%= value.DS_JUSTIFIC %>
+      <td class="text-center">
+        <% if(value.DS_JUSTIFIC == null) { %>
+          -
+        <% } else { %>
+          <%= value.DS_JUSTIFIC %>
+        <% } %>
       </td>
-      <td class="text-center"></td>
+      <td class="text-center">
+        <% if(value.NR_JULG_COMISSAO == null) { %>
+          -
+        <% } else { %>
+          <%= value.NR_JULG_COMISSAO %>
+        <% } %>
+      </td>
       <td>
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-danger"
             data-bs-toggle="modal" data-bs-target="#exampleModal"
-            onclick="insertQuali('<%= value.CD_METAS_QUALIT %>', '<%= value.DS_NOME %>', '<%= value.NR_CONSTATACOES %>', '<%= value.NR_EVID_APRESENTA %>', '<%= value.DS_JUSTIFIC %>')"
+            onclick="insertQuali(
+              '<%= value.CD_METAS_QUALIT %>',
+              '<%= value.DS_NOME %>',
+              '<%= value.NR_CONSTATACOES %>',
+              '<%= value.NR_EVID_APRESENTA %>',
+              '<%= documents %>',
+              '<%= value.DS_JUSTIFIC %>')"
           >
             Editar
           </button>
