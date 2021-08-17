@@ -1,5 +1,8 @@
 <%- include('../headmetasfisicas'); -%>
-
+  <div class="btn-group mt-4 mb-4" role="group" aria-label="Basic example">
+    <input type="date" name="datefisica" class="form-control" id="datefisica">
+    <button class="btn btn-danger" onclick="SearchDate()">Buscar</button>
+  </div>
   <!-- Tab links -->
   <div class="tab nav nav-pills flex-column flex-sm-row">
     <% process.forEach( valueProc => { %>
@@ -108,3 +111,11 @@
   </div>
 
 <%- include('../footer'); -%>
+
+<script>
+  function SearchDate() {
+    var date = document.getElementById('datefisica').value;
+    date = date.split("-");
+    window.location.href = '/' + date[0] + "-" + date[1];
+  }
+</script>

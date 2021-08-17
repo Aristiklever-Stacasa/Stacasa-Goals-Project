@@ -1,5 +1,9 @@
 <%- include('../headmetasqualit'); -%>
 
+  <div class="btn-group mt-4 mb-4" role="group" aria-label="Basic example">
+    <input type="date" name="datequalit" class="form-control" id="datequalit">
+    <button class="btn btn-danger" onclick="SearchDate()">Buscar</button>
+  </div>
   <!-- Tab links -->
   <div class="tab">
     <% setors.forEach( setor => { %>
@@ -105,4 +109,12 @@
 
 
 <%- include('../footer'); -%>
+
+<script>
+  function SearchDate() {
+    var date = document.getElementById('datequalit').value;
+    date = date.split("-");
+    window.location.href = '/' + date[0] + "-" + date[1];
+  }
+</script>
 

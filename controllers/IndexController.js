@@ -1,17 +1,30 @@
 const express = require('express');
 const database = require('../database/database');
 
-const dateForQuery = () => {
-  const currentMonth = new Date().getMonth() + 1;
-  return (new Date().getFullYear() + "-0" + currentMonth);
+const dateForQuery = (date = undefined) => {
+  if(date == undefined) {
+    const currentMonth = new Date().getMonth() + 1;
+    return (new Date().getFullYear() + "-0" + currentMonth);
+  } else {
+    console.log(date);
+    return date;
+  }
+  
 };
 
 const fisicas = (req, res) => {
+  var date = "";
   database.connect(function (err) {
+    if(req.params.date) {
+      //console.log(req.params);
+      date = dateForQuery(req.params.date);
+    } else {
+      date = dateForQuery();
+    }
 
     const queryProcess = "SELECT CD_PROCESSO, DS_NOME FROM processos";
-    const queryMetasFisicasCurrentDate = "SELECT mf.CD_METAS_FISICAS, p.CD_PROCESSO, s.DS_NOME, mf.NR_META, mf.NR_CONSTATACOES, lmf.NR_EVID_APRESENTA, lmf.DS_JUSTIFIC, lmf.NR_JULG_COMISSAO FROM metas_fisicas mf LEFT JOIN (SELECT CD_METAS_FISICAS, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO, NR_SALDO FROM log_metas_fisicas lmf WHERE lmf.DT_CRIACAO LIKE '" + dateForQuery() + "%') lmf ON lmf.CD_METAS_FISICAS = mf.CD_METAS_FISICAS INNER JOIN setores s ON s.CD_SETOR = mf.CD_SETOR INNER JOIN processos p ON p.CD_PROCESSO = mf.CD_PROCESSO";
-    const queryDocuments = "SELECT mff.CD_METAS_FONTES_FISICAS, mff.CD_METAS_FISICAS, mff.CD_FONTES_EVIDENCIAS_FISICAS, fef.CD_DOC, fef.DS_NOME, fef.DS_DIRETORIO FROM metas_fontes_fisicas mff INNER JOIN fontes_evidencias_fisica fef ON mff.CD_FONTES_EVIDENCIAS_FISICAS = fef.CD_DOC WHERE mff.DT_VINCULACAO LIKE '" + dateForQuery() + "%'";
+    const queryMetasFisicasCurrentDate = "SELECT mf.CD_METAS_FISICAS, p.CD_PROCESSO, s.DS_NOME, mf.NR_META, mf.NR_CONSTATACOES, lmf.NR_EVID_APRESENTA, lmf.DS_JUSTIFIC, lmf.NR_JULG_COMISSAO FROM metas_fisicas mf LEFT JOIN (SELECT CD_METAS_FISICAS, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO, NR_SALDO FROM log_metas_fisicas lmf WHERE lmf.DT_CRIACAO LIKE '" + date + "%') lmf ON lmf.CD_METAS_FISICAS = mf.CD_METAS_FISICAS INNER JOIN setores s ON s.CD_SETOR = mf.CD_SETOR INNER JOIN processos p ON p.CD_PROCESSO = mf.CD_PROCESSO";
+    const queryDocuments = "SELECT mff.CD_METAS_FONTES_FISICAS, mff.CD_METAS_FISICAS, mff.CD_FONTES_EVIDENCIAS_FISICAS, fef.CD_DOC, fef.DS_NOME, fef.DS_DIRETORIO FROM metas_fontes_fisicas mff INNER JOIN fontes_evidencias_fisica fef ON mff.CD_FONTES_EVIDENCIAS_FISICAS = fef.CD_DOC WHERE mff.DT_VINCULACAO LIKE '" + date + "%'";
 
     database.query(queryProcess + "; " + queryMetasFisicasCurrentDate + "; " + queryDocuments,
       (err, result, fields) => {
@@ -33,11 +46,18 @@ const fisicas = (req, res) => {
 };
 
 const qualitativas = (req, res) => {
+  var date = "";
   database.connect(function (err) {
+    if(req.params.date) {
+      //console.log(req.params);
+      date = dateForQuery(req.params.date);
+    } else {
+      date = dateForQuery();
+    }
 
     const setors = "SELECT DISTINCT s.CD_SETOR, s.DS_NOME SETOR FROM metas_qualit mq INNER JOIN setores s ON mq.CD_SETOR = s.CD_SETOR";
-    const queryMetasQualitCurrentDate = "SELECT mq.CD_METAS_QUALIT, s.CD_SETOR, s.DS_NOME, mq.DS_NOME, mq.NR_CONSTATACOES, lmq.NR_EVID_APRESENTA, lmq.DS_JUSTIFIC, lmq.NR_JULG_COMISSAO FROM metas_qualit mq LEFT JOIN (SELECT CD_METAS_QUALIT, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO FROM log_metas_qualit lmq WHERE lmq.DT_CRIACAO LIKE '" + dateForQuery() + "%') lmq ON lmq.CD_METAS_QUALIT = mq.CD_METAS_QUALIT INNER JOIN setores s ON s.CD_SETOR = mq.CD_SETOR";
-    const queryDocuments = "SELECT mfq.CD_METAS_FONTES_QUALIT, mfq.CD_METAS_QUALIT, mfq.CD_FONTES_EVIDENCIAS_QUALIT, feq.CD_DOC, feq.DS_NOME, feq.DS_DIRETORIO FROM metas_fontes_qualit mfq INNER JOIN fontes_evidencias_qualit feq ON mfq.CD_FONTES_EVIDENCIAS_QUALIT = feq.CD_DOC WHERE mfq.DT_VINCULACAO LIKE '" + dateForQuery() + "%'";
+    const queryMetasQualitCurrentDate = "SELECT mq.CD_METAS_QUALIT, s.CD_SETOR, s.DS_NOME, mq.DS_NOME, mq.NR_CONSTATACOES, lmq.NR_EVID_APRESENTA, lmq.DS_JUSTIFIC, lmq.NR_JULG_COMISSAO FROM metas_qualit mq LEFT JOIN (SELECT CD_METAS_QUALIT, NR_EVID_APRESENTA, DS_JUSTIFIC, NR_JULG_COMISSAO FROM log_metas_qualit lmq WHERE lmq.DT_CRIACAO LIKE '" + date + "%') lmq ON lmq.CD_METAS_QUALIT = mq.CD_METAS_QUALIT INNER JOIN setores s ON s.CD_SETOR = mq.CD_SETOR";
+    const queryDocuments = "SELECT mfq.CD_METAS_FONTES_QUALIT, mfq.CD_METAS_QUALIT, mfq.CD_FONTES_EVIDENCIAS_QUALIT, feq.CD_DOC, feq.DS_NOME, feq.DS_DIRETORIO FROM metas_fontes_qualit mfq INNER JOIN fontes_evidencias_qualit feq ON mfq.CD_FONTES_EVIDENCIAS_QUALIT = feq.CD_DOC WHERE mfq.DT_VINCULACAO LIKE '" + date + "%'";
 
     database.query(setors + "; " + queryMetasQualitCurrentDate + "; " + queryDocuments,
       (err, result, fields) => {

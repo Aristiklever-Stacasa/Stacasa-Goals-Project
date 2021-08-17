@@ -18,8 +18,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.get('/', IndexController.fisicas);
-router.get('/metas/qualitativas', IndexController.qualitativas);
+router.get('/:date?', IndexController.fisicas);
+router.get('/metas/qualitativas/:date?', IndexController.qualitativas);
 
 router.post('/insertFisicas', upload.array('physycfile'), IndexController.fisicDataInsert);
 router.post('/insertQualit', upload.array('physycfile'), IndexController.qualitDataInsert);
