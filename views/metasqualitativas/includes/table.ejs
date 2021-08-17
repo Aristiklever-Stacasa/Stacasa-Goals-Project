@@ -6,13 +6,19 @@
       <th scope="col" class="text-center">Evidências Apresentadas</th>
       <th scope="col" class="text-center">Fontes de Evidências</th>
       <th scope="col" class="text-center">Justificativas</th>
-      <th scope="col" class="text-center">Julgamento das comissões</th>
+      <th scope="col" class="text-center">Julgamento da Comissão</th>
       <th scope="col" class="text-center"></th>
     </tr>
   </thead>
   <tbody>
     <% qualitative_goals.forEach( value => {
         if( setor.CD_SETOR == value.CD_SETOR ) {
+          let thereIsDoc = 0;
+          documents.forEach(valueDoc => {
+            if(valueDoc.CD_METAS_QUALIT == value.CD_METAS_QUALIT) {
+              thereIsDoc = 1;
+            }
+          })
     %>
     <tr>
       <th scope="row" class="text-center"> <%= value.DS_NOME %> </th>
@@ -24,21 +30,31 @@
           <%= value.NR_EVID_APRESENTA %>
         <% } %>
       <td class="text-center">
-        <div class="dropdown">
-            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-              Listar arquivos
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <%
-              documents.forEach(valueDoc => {
-                if(valueDoc.CD_METAS_QUALIT == value.CD_METAS_QUALIT) {
-            %>
-                  <li><a class="dropdown-item" target="_blank" href="/<%= valueDoc.DS_DIRETORIO %>"><%= valueDoc.DS_NOME %></a></li>
-            <%
-              }})
-            %>
-          </ul>
-        </div>
+        <%
+          if(thereIsDoc == 0) {
+        %>
+            -
+        <%
+          } else {
+        %>
+            <div class="dropdown">
+                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Listar arquivos
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <%
+                  documents.forEach(valueDoc => {
+                    if(valueDoc.CD_METAS_QUALIT == value.CD_METAS_QUALIT) {
+                %>
+                      <li><a class="dropdown-item" target="_blank" href="/<%= valueDoc.DS_DIRETORIO %>"><%= valueDoc.DS_NOME %></a></li>
+                <%
+                  }})
+                %>
+              </ul>
+            </div>
+        <%
+          }
+        %>
       </td>
       <td class="text-center">
         <% if(value.DS_JUSTIFIC == null) { %>
