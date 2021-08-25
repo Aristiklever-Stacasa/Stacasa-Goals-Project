@@ -35,23 +35,32 @@
         <form action="/insertFisicas" method="POST" enctype="multipart/form-data">
           <input type="hidden" id="cd_metas_fisicas" name="cd_metas_fisicas" value="">
           <div class="container">
-            <div class="row">
-              <div class="col">
-                <div class="mb-3">
+            <div class="row align-items-start">
+              <div class="col-2">
+                <div class="mb-3 ml-0">
                   <label for="exampleFormControlInput1" class="form-label">Meta</label>
                   <div id="meta"></div>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-3">
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">Constatações</label>
+                  <label for="exampleFormControlInput1" class="form-label" style="overflow-wrap: break-word; hyphens: manual;">Consta.</label>
                   <div id="constatacoes"></div>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-4">
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">Evidências Apresentadas</label>
-                  <input type="number" name="evidpres" class="form-control" id="evidpres" onchange="calcJulg(this)">
+                  <input type="number" name="evidpres" class="form-control" id="evidpres" onchange="calcJulg(this)" required>
+                  <div class="invalid-feedback">
+                    Insira a evidência.
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="mb-3">
+                  <label for="">Julg. da comissão</label>
+                  <input type="number" name="julgcomis" class="form-control" id="julgcomis" readonly>
                 </div>
               </div>
             </div>
@@ -60,16 +69,20 @@
           <div class="row">
             <div class="col">
               <div class="mb-3">
+                
                 <label for="">Fontes de Evidências</label>
-                <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple>
+                <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple required>
+                <div class="invalid-feedback">
+                  Insira a(s) fonte(s).
+                </div>
               </div>
             </div>
-            <div class="col">
+            <!-- <div class="col">
               <div class="mb-3">
                 <label for="">Julg. da comissão</label>
                 <input type="number" name="julgcomis" id="julgcomis" readonly>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div class="mb-3">
@@ -85,8 +98,36 @@
   </div>
   </div>
 
+  <!-- PUXANDO OS DOCUMENTOS -->
   <script>
-    function Insert(CD_METAS_FISICAS, DS_NOME, NR_META, NR_CONSTATACOES, NR_EVID_APRESENTA, DS_JUSTIFIC) { 
+    var docs = [];
+  </script>
+  <% documents.forEach( valueDoc => { %>
+    <script>
+      docs.push({
+        'CD_METAS_FONTES_FISICAS': '<%= valueDoc.CD_METAS_FONTES_FISICAS  %>',
+        'CD_METAS_FISICAS': '<%= valueDoc.CD_METAS_FISICAS %>',
+        'CD_FONTES_EVIDENCIAS_FISICAS': '<%= valueDoc.CD_FONTES_EVIDENCIAS_FISICAS %>',
+        'CD_DOC': '<%= valueDoc.CD_DOC %>',
+        'DS_NOME': '<%= valueDoc.DS_NOME %>',
+        'DS_DIRETORIO': '<%= valueDoc.DS_DIRETORIO %>'
+      });
+    </script>
+  <% }) %>
+
+  <script>
+    const currentDocs = (id = 0) => {
+      let docsFilter = [];
+
+      docs.forEach( value => {
+        if(value.CD_METAS_FISICAS == id)
+          docsFilter.push(value);
+      });
+
+      return docsFilter;
+    }
+
+    function Insert(CD_METAS_FISICAS, DS_NOME, NR_META, NR_CONSTATACOES, NR_EVID_APRESENTA, DOCS, DS_JUSTIFIC) { 
       document.getElementById('cd_metas_fisicas').value = CD_METAS_FISICAS;
       document.getElementById('modal-name').innerHTML = DS_NOME;
       document.getElementById('meta').innerHTML = NR_META;
@@ -94,6 +135,37 @@
       document.getElementById('evidpres').value = NR_EVID_APRESENTA;
       document.getElementById('justific').value = DS_JUSTIFIC;
       document.getElementById('julgcomis').value = (NR_CONSTATACOES * (((NR_EVID_APRESENTA * 100) / NR_META) / 100)).toFixed(1);
+
+      const docs = currentDocs(CD_METAS_FISICAS);
+      // console.log(docs);
+      if(docs.length > 0) {
+        let checkboxs = [];
+
+        docs.forEach(value => {
+          let input = document.createElement('input');
+          input.
+          input.type = 'checkbox';
+          input.name = 'docs[]';
+          input.value = value.CD_DOC;
+          input.classList.add("form-check-input");
+          input.name = "";
+          checkboxs.push(input);
+          
+          let label = document.createElement('label');
+          label.classList.add('form-check-label');
+          label.htmlFor = "";
+          label.innerText = value.DS_NOME;
+          console.log(label);
+        });
+
+        // contruir um checkbox
+        let div = document.createElement('div');
+        div.classList.add("form-check");
+        console.log(div);
+        
+        console.log(checkboxs);
+        div.appendChild();
+      }
     }
 
     const calcJulg = ( input ) => {
@@ -113,6 +185,7 @@
 <%- include('../footer'); -%>
 
 <script>
+  
   function SearchDate() {
     var date = document.getElementById('datefisica').value;
     date = date.split("-");

@@ -51,6 +51,7 @@
                       documents.forEach(valueDoc => {
                         if(valueDoc.CD_METAS_FISICAS == valuePhys.CD_METAS_FISICAS) {
                     %>
+                      
                       <li><a class="dropdown-item" target="_blank" href="/<%= valueDoc.DS_DIRETORIO %>"><%= valueDoc.DS_NOME %></a></li>
                     <%
                       }})
@@ -62,7 +63,7 @@
               %>
             </td>
             <td class="text-center">
-              <% if(valuePhys.DS_JUSTIFIC == null) { %>
+              <% if(valuePhys.DS_JUSTIFIC == null || valuePhys.DS_JUSTIFIC == "") { %>
                 -
               <% } else { %>
                 <%= valuePhys.DS_JUSTIFIC %>
@@ -84,6 +85,7 @@
                 ,'<%= valuePhys.NR_META %>'
                 ,'<%= valuePhys.NR_CONSTATACOES %>'
                 ,'<%= valuePhys.NR_EVID_APRESENTA %>'
+                ,'<%= documents %>'
                 ,'<%= valuePhys.DS_JUSTIFIC %>')"
               >
 
@@ -95,9 +97,3 @@
   </tbody>
 </table>
 
-<script>
-  function Insert(par01, par02, par03, par04) {
-    //alert(par01);
-    document.getElementById('evidpres').value = par01;
-  }
-</script>

@@ -57,7 +57,7 @@
         %>
       </td>
       <td class="text-center">
-        <% if(value.DS_JUSTIFIC == null) { %>
+        <% if(value.DS_JUSTIFIC == null || value.DS_JUSTIFIC == "") { %>
           -
         <% } else { %>
           <%= value.DS_JUSTIFIC %>

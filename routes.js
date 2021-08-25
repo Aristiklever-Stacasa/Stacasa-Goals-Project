@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const IndexController = require('./controllers/IndexController');
+const FisicaController = require('./controllers/FisicaController');
+const QualitController = require('./controllers/QualitController');
 const UserController = require('./controllers/UserController');
-const auth = require('./middlewares/auth');
+const fs = require('fs');
 
 const multer = require('multer');
 
@@ -18,16 +19,71 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.get('/:date?', IndexController.fisicas);
-router.get('/metas/qualitativas/:date?', IndexController.qualitativas);
+const auth = (req, res, next) => {
+  if (fs.existsSync('userdata.txt')) {
+    fs.readFile('userdata.txt', 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return
+      }
+      var userid = data.split(',')[0].split(':')[1];
+      var username = data.split(',')[1].split(':')[1];
+      next();
+    });
+  } else {
+    res.redirect('/users/login');
+  }
+};
 
-router.post('/insertFisicas', upload.array('physycfile'), IndexController.fisicDataInsert);
-router.post('/insertQualit', upload.array('physycfile'), IndexController.qualitDataInsert);
+router.get('/:date?', auth, FisicaController.indexFisicas);
+router.get('/metas/qualitativas/:date?', auth, QualitController.indexQualit);
+
+router.post('/insertFisicas', auth, upload.array('physycfile'), FisicaController.fisicaManagementData);
+router.post('/insertQualit', auth, upload.array('physycfile'), QualitController.qualitDataManagement);
 
 //Rotas de usuário
-router.get('/login', UserController.login);
-router.get('/logout', UserController.logout);
-router.post('/tologin', UserController.tologin);
+router.get('/users/login', UserController.login);
+//Destruir sessão
+router.get('/users/logout', (req, res) => {
+  if (fs.existsSync('userdata.txt')) {
+    fs.unlink('userdata.txt', function (err) {
+      if (err) throw err;
+    });
+    res.redirect('/users/login');
+  }
+});
+//Fazer login
+router.post('/users/tologin', UserController.tologin);
+router.get('/set/auth', (req, res) => {
+  var { userid, username } = req.query;
+
+  fs.writeFile('userdata.txt', 'userid:' + userid + ', username:' + username, function (err) {
+    if (err) throw err;
+    res.redirect('/');
+  }); 
+});
+
+router.get('/generate/document', auth, (req, res) => {
+  res.render('pdf');
+});
+
+
+// router.get('/get/auth', (req, res) => {
+//   if (fs.existsSync('userdata.txt')) {
+//     fs.readFile('userdata.txt', 'utf8', (err, data) => {
+//       if (err) {
+//         console.error(err);
+//         return
+//       }
+//       var userid = data.split(',')[0].split(':')[1];
+//       var username = data.split(',')[1].split(':')[1];
+//       res.send(username);
+//     });
+//   } else {
+//     // res.send('DOES NOT exist:');
+//     res.redirect('/users/login');
+//   }
+// });
 
 module.exports = router;
 

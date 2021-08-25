@@ -1,8 +1,17 @@
 <%- include('../headlogin'); -%>
+
+  <% if(typeof(get) != 'undefined' && get == 'false') { %>
+    <div class="container">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Usuário e/ou senha inválida!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  <% } %>
   
   <div class="container mt-4">
     <img src="/images/logostacasa.png" alt="Logo_Sta_Casa" class="image_center" width="200px">
-    <form action="/tologin" method="POST">
+    <form action="/users/tologin" method="POST">
       <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Usuário</label>
         <input type="text" class="form-control" name="user" placeholder="Seu Usuário">

@@ -1,16 +1,8 @@
 const express = require('express');
 const database = require('../database/database');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-
-const JWTsecret = "asdldskfnlsdmfklasdmflksdmnbvjhbuihregretwre";
 
 const login = (req, res) => {
-  res.render('users/login');
-};
-
-const logout = (req, res) => {
-  res.render('users/login');
+  res.render('users/login', { get: req.query.access });
 };
 
 const tologin = (req, res) => {
@@ -18,23 +10,24 @@ const tologin = (req, res) => {
 
   database.connect(function (err) {
     database.query("SELECT CD_USUARIO, DS_LOGIN, DS_SENHA FROM usuarios WHERE DS_LOGIN = '" + user + "'", (err, user_list, fields) => {
-      //res.json(user_list);
-      if(bcrypt.compareSync(password, user_list[0].DS_SENHA)) {
+      if(user_list != '') {
 
-        jwt.sign({ id: user_list[0].CD_USUARIO, login: user_list[0].DS_LOGIN }, JWTsecret, { expiresIn: '1h' }, (err, token) => {
-          if(err) {
-            //res.status(400);
-            //res.json('Falha interna');
-            res.redirect('back');
-          } else {
-            res.redirect('/');
-          }
-        });
+        var cryptpass = require("crypto")
+        .createHash("sha256")
+        .update(req.body.password)
+        .digest("hex");
 
-        //res.send("Senha válida");
+        if( cryptpass == user_list[0].DS_SENHA ) {
+          //user_list[0].CD_USUARIO user_list[0].DS_LOGIN }
+          res.redirect('/set/auth?userid=' + user_list[0].CD_USUARIO + '&username=' + user_list[0].DS_LOGIN);
+        } else {
+          res.redirect('/users/login?access=false');
+        }
+
       } else {
-        res.redirect('back');
+        res.redirect('/users/login?access=false');
       }
+      
     });
   });
 
@@ -54,7 +47,6 @@ const tologin = (req, res) => {
 
 module.exports = {
   login,
-  logout,
   tologin
 };
 

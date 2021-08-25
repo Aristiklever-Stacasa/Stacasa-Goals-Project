@@ -113,7 +113,8 @@ const qualitDataInsert = (req, res) => {
     database.query("SELECT COUNT(*) length FROM log_metas_qualit WHERE CD_METAS_QUALIT = "+ body.cd_metas_qualit +" AND DT_CRIACAO LIKE '" + dateForQuery() + "%'",
     (err, result, fields) => {
       if(result[0].length)
-        res.json({ res: 'update' });
+        console.log({ res: 'update' });
+        // res.json({ res: 'update' });
         // update("fisicas", {body, files});
       else {
         // res.json(insertMetas("fisicas", { body, files }));
