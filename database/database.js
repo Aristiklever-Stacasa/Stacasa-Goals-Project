@@ -16,7 +16,7 @@ const sta_casa = {
   multipleStatements: true
 };
 
-var connection = mysql.createConnection(sta_casa);
+let connection = mysql.createConnection(localhost);
 
 connection.connect(function (err) {
   if (err) {

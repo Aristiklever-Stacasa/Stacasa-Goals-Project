@@ -27,7 +27,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-name"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="removeChecks()"></button>
       </div>
       <div class="modal-body">
 
@@ -44,7 +44,7 @@
               </div>
               <div class="col-3">
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label" style="overflow-wrap: break-word; hyphens: manual;">Consta.</label>
+                  <label for="exampleFormControlInput1" class="form-label">Consta.</label>
                   <div id="constatacoes"></div>
                 </div>
               </div>
@@ -67,9 +67,8 @@
           </div>
 
           <div class="row">
-            <div class="col">
+            <div class="col" id="col-docs-insert">
               <div class="mb-3">
-                
                 <label for="">Fontes de Evidências</label>
                 <input class="form-control" type="file" name="physycfile" id="formFileMultiple" multiple required>
                 <div class="invalid-feedback">
@@ -139,33 +138,46 @@
       const docs = currentDocs(CD_METAS_FISICAS);
       // console.log(docs);
       if(docs.length > 0) {
-        let checkboxs = [];
+        let docs_insert = document.getElementById("col-docs-insert");
+
+        let divChecksCol = document.createElement('div');
+        divChecksCol.classList.add("col-auto");
+        divChecksCol.id = "col-docs-checks";
 
         docs.forEach(value => {
-          let input = document.createElement('input');
-          input.
-          input.type = 'checkbox';
-          input.name = 'docs[]';
-          input.value = value.CD_DOC;
-          input.classList.add("form-check-input");
-          input.name = "";
-          checkboxs.push(input);
+          // div onde estarão o check e a label
+          let divCheckUnique = document.createElement('div');
+          divCheckUnique.classList.add("form-check");
+
+          // contruir um checkbox
+          let checkbox = document.createElement('input');
+          checkbox.id = "checkDoc" + value.CD_DOC;
+          checkbox.type = 'checkbox';
+          checkbox.name = 'docs[]';
+          checkbox.value = value.CD_DOC;
+          checkbox.classList.add("form-check-input");
           
+          // contrução de sua label
           let label = document.createElement('label');
           label.classList.add('form-check-label');
-          label.htmlFor = "";
+          label.htmlFor = "checkDoc" + value.CD_DOC;
           label.innerText = value.DS_NOME;
-          console.log(label);
-        });
 
-        // contruir um checkbox
-        let div = document.createElement('div');
-        div.classList.add("form-check");
-        console.log(div);
+          divCheckUnique.append(checkbox, label);
+          divChecksCol.appendChild(divCheckUnique);
+          
+        });
+        // console.log(divChecksCol);
+        docs_insert.before(divChecksCol);
         
-        console.log(checkboxs);
-        div.appendChild();
+        // div.appendChild();
       }
+    }
+
+    const removeChecks = () => {
+      let colChecks = document.getElementById("col-docs-checks");
+      if(colChecks)
+        colChecks.parentNode.removeChild(colChecks);
     }
 
     const calcJulg = ( input ) => {
