@@ -1,4 +1,5 @@
 <%- include('../headmetasfisicas'); -%>
+
   <div class="btn-group mt-4 mb-4" role="group" aria-label="Basic example">
     <input type="date" name="datefisica" class="form-control" id="datefisica">
     <button class="btn btn-danger" onclick="SearchDate()">Buscar</button>
@@ -32,7 +33,7 @@
       <div class="modal-body">
 
         <!--Formulário de inserção-->
-        <form action="/insertFisicas" method="POST" enctype="multipart/form-data">
+        <form id="formPopup" action="/insertFisicas" method="POST" enctype="multipart/form-data">
           <input type="hidden" id="cd_metas_fisicas" name="cd_metas_fisicas" value="">
           <div class="container">
             <div class="row align-items-start">
@@ -126,7 +127,7 @@
       return docsFilter;
     }
 
-    function Insert(CD_METAS_FISICAS, DS_NOME, NR_META, NR_CONSTATACOES, NR_EVID_APRESENTA, DOCS, DS_JUSTIFIC) { 
+    function Insert(CD_METAS_FISICAS, DS_NOME, NR_META, NR_CONSTATACOES, NR_EVID_APRESENTA, DOCS, DS_JUSTIFIC) {
       document.getElementById('cd_metas_fisicas').value = CD_METAS_FISICAS;
       document.getElementById('modal-name').innerHTML = DS_NOME;
       document.getElementById('meta').innerHTML = NR_META;
@@ -135,6 +136,7 @@
       document.getElementById('justific').value = DS_JUSTIFIC;
       document.getElementById('julgcomis').value = (NR_CONSTATACOES * (((NR_EVID_APRESENTA * 100) / NR_META) / 100)).toFixed(1);
 
+      // RECOLHENDO OS DOCUMENTOS ATUAIS
       const docs = currentDocs(CD_METAS_FISICAS);
       // console.log(docs);
       if(docs.length > 0) {
@@ -170,8 +172,14 @@
         // console.log(divChecksCol);
         docs_insert.before(divChecksCol);
         
-        // div.appendChild();
       }
+
+      // let date = sessionStorage.getItem('currentDate');
+      // if(date) {
+      //   let actForm = document.getElementById("formPopup");
+      //   actForm.action = sessionStorage.getItem('formAction') + '/' + date;
+      // }
+
     }
 
     const removeChecks = () => {
@@ -199,8 +207,13 @@
 <script>
   
   function SearchDate() {
-    var date = document.getElementById('datefisica').value;
-    date = date.split("-");
-    window.location.href = '/' + date[0] + "-" + date[1];
+    var date = document.getElementById('datefisica').value.split("-");
+
+    if(date.length > 1) {
+      sessionStorage.setItem('currentDate', date[0] + '-' + date[1]);
+      sessionStorage.setItem('formAction', document.getElementById("formPopup").action);
+      window.location.href = '/' + date[0] + "-" + date[1];
+    }
+
   }
 </script>

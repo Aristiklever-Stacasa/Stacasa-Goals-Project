@@ -53,13 +53,11 @@ const qualitDataManagement = (req, res) => {
     database.query("SELECT COUNT(*) length FROM log_metas_qualit WHERE CD_METAS_QUALIT = " + body.cd_metas_qualit + " AND DT_CRIACAO LIKE '" + dateForQuery() + "%'",
       (err, result, fields) => {
         if (result[0].length)
-          // res.json({ res: 'update' });
-          // updateMetas("qualit", { body, files });
-          console.log();
-        else {
-          // res.json(insertMetas("fisicas", { body, files }));
+          updateMetas("qualit", { body, files });
+        // res.json({ res: 'update' });
+        else
           insertMetas("qualit", { body, files });
-        }
+          // res.json(insertMetas("fisicas", { body, files }));
 
       });
 

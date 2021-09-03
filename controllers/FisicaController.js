@@ -48,18 +48,28 @@ const indexFisicas = (req, res) => {
 const fisicaManagementData = (req, res) => {
   let body = req.body;
   let files = req.files;
+  
+  // res.json({ files, body });
 
   if (body.evidpres == "")
     body.evidpres = 0;
-  // res.json({ files, body });
+
+  // let params = req.params;
+  
+  // let queryDate = '';
+  
+  // if(params.date)
+  //   queryDate = params.date;
+  // else
+  //   queryDate = dateForQuery();
+    
 
   database.connect(function (err) {
     database.query("SELECT COUNT(*) length FROM log_metas_fisicas WHERE CD_METAS_FISICAS = " + body.cd_metas_fisicas + " AND DT_CRIACAO LIKE '" + dateForQuery() + "%'",
       (err, result, fields) => {
         if (result[0].length)
-          console.log();
         // res.json({ res: 'update' });
-        //updateMetas("fisicas", { body, files });
+          updateMetas("fisicas", { body, files });
         else {
           // res.json(insertMetas("fisicas", { body, files }));
           insertMetas("fisicas", { body, files });
